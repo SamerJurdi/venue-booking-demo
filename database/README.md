@@ -39,8 +39,13 @@ This connects to venue_booking_db and executes the SQL commands inside schema.sq
 psql -U postgres -d venue_booking_db -c "\dt"
 ```
 This lists all tables in the database so you can confirm that the tables were created correctly.
- ### Claering the database (Optional):
-  ```bash
- psql -U postgres -d venue_booking_demo -c 'TRUNCATE TABLE "ReservationParticipants", "Reservation", "VenueType", "Venue", "UserType", "Type", "User" CASCADE;'
- ```
- This deletes all the mentioned tables and their data.
+### Clearing the database (Optional):
+```bash
+psql -U postgres -d venue_booking_db -c 'TRUNCATE TABLE "ReservationParticipants", "Reservation", "VenueType", "Venue", "UserRole", "Type", "User" CASCADE;'
+```
+This deletes all records in the mentioned tables.
+### Populating the database with demo data:
+```bash
+psql -U postgres -d venue_booking_db -f demo_data.sql
+```
+This adds all the demo records into their respective tables.
