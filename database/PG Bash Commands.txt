@@ -1,4 +1,0 @@
-psql -U postgres -c "CREATE DATABASE venue_booking_demo;"
-psql -U postgres -d venue_booking_demo -f schema.sql
-psql -U postgres -d venue_booking_demo -c "\dt"
-psql -U postgres -d venue_booking_demo -c 'TRUNCATE TABLE "ReservationParticipants", "Reservation", "VenueType", "Venue", "UserType", "Type", "User" CASCADE;'
