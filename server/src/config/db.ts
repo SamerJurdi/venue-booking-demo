@@ -1,10 +1,6 @@
 import pg from 'pg';
-import dotenv from 'dotenv';
 
 const { Pool } = pg;
-
-// Load environment variables from .env
-dotenv.config();
 
 // Initialize connection pool
 const pool = new Pool({
