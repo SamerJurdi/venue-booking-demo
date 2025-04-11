@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import Login from '@/components/Login.vue';
+import {useRouter} from 'vue-router';
+import {LoginContainer} from '@/containers';
 
-const login = async (username: string, password: string): Promise<string | null> => {
+const router = useRouter();
 
-  if (username !== 'admin' || password !== 'password123') {
-    return 'Invalid username or password';
-  } else console.log('Attempting login with:', username, password);
-
-  return null;
-};
+const onLogin = () => {
+  router.push({ name: 'home' });
+}
 </script>
 
 <template>
-  <Login :login="login" />
+  <LoginContainer :onLogin="onLogin" />
 </template>
