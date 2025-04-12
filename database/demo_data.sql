@@ -25,14 +25,16 @@ INSERT INTO "Type" (id, name, description, parent_type_id) VALUES
 
 -- Insert users
 INSERT INTO "User" (username, prefix, first_name, last_name, email, password_hash) VALUES 
-('ADMIN1', NULL, 'Test', 'Admin1', 'admin1@example.com', 'hashedpassword1'),
-('PROF1', 'PhD', 'Test', 'Professor1', 'professor1@example.com', 'hashedpassword2'),
-('STUD1', NULL, 'Test', 'Student1', 'student1@example.com', 'hashedpassword3');
+('ADMIN1', NULL, 'Test', 'Admin1', 'admin1@example.com', '$argon2id$v=19$m=65536,t=3,p=4$LmuisRsL7MflnumQqlL3IQ$daPZZhnSlz9F7s8hnwBAMjiT5Bg2knsCnoVYfXFahGY'),
+('PROF1', 'PhD', 'Test', 'Professor1', 'professor1@example.com', '$argon2id$v=19$m=65536,t=3,p=4$YUJrQWCTjHJ6uerurImVNw$FSERiU+5Uhbwa2Cv1e7ECULMc8/uXizQrHLiDNcyDqo'),
+('STUD1', NULL, 'Test', 'Student1', 'student1@example.com', '$argon2id$v=19$m=65536,t=3,p=4$KuNLCqFaBqHLYvwHDHvNIw$t2ZXCWkvjYr1R+3MwSY/0n3pm1uo7G5PO70fpgMHMD4'),
+('PROF2', 'PhD', 'Test', 'Prof2', 'professor2@example.com', '$argon2id$v=19$m=65536,t=3,p=4$FCELovoSwQtZCbGatybgWg$AddnoJQLWj7LG7teuaqZhq/Y0ZtavpmkjX1RyT8uglQ');
 
 -- User types
 INSERT INTO "UserRole" (user_id, role_id) VALUES 
 (1, 'adminRole'),
 (2, 'professorRole'),
+(4, 'professorRole'),
 (3, 'studentRole');
 
 -- Insert venue

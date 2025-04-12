@@ -41,9 +41,9 @@ psql -U postgres -d venue_booking_db -c "\dt"
 This lists all tables in the database so you can confirm that the tables were created correctly.
 ### Clearing the database (Optional):
 ```bash
-psql -U postgres -d venue_booking_db -c 'TRUNCATE TABLE "ReservationParticipants", "Reservation", "VenueType", "Venue", "UserRole", "Type", "User" CASCADE;'
+psql -U postgres -d venue_booking_db -c 'DROP TABLE "ReservationParticipants", "Reservation", "VenueType", "Venue", "UserRole", "Type", "User" CASCADE;'
 ```
-This deletes all records in the mentioned tables.
+This deletes all mentioned tables and their records.
 ### Populating the database with demo data:
 ```bash
 psql -U postgres -d venue_booking_db -f demo_data.sql
