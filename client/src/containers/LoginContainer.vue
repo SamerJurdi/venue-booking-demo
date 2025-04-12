@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Login} from '@/components';
+import {LogInForm} from '@/components';
 
 const props = defineProps({
   onLogin: {
@@ -21,5 +21,5 @@ const login = async (username: string, password: string): Promise<string | null>
 </script>
 
 <template>
-  <Login :login="login" />
+  <LogInForm :login="login" />
 </template>
