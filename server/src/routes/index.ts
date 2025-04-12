@@ -1,4 +1,4 @@
-import authRoute from './authorization.js';
+import authRoute from './authRoute.js';
 
 export {
   authRoute,

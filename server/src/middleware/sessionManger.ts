@@ -7,17 +7,20 @@ function generateSessionId(length = 32) {
 }
 
 function activateSession(req: Request, userId: string) {
-  console.log({session: req.session})
-  req.session.cusotmId = generateSessionId();
+  req.session.customId = generateSessionId();
   req.session.userId = userId;
 }
 
-function ensureSessionActive(req: Request, res: Response, next: NextFunction) {
-  if (req.session?.cusotmId) {
-    return next();
+function ensureSessionActive(req: Request, res: Response, next: NextFunction): void {
+  if (req.session?.customId) {
+    next();
   } else {
-    return res.status(401).json({ message: 'Session expired or not active. Please log in again.' });
+    res.status(401).json({ message: 'Session expired or not active. Please log in again.' });
   }
 }
 
-export {activateSession, ensureSessionActive}
+function getSessionUserId(req: Request) {
+  return req.session.userId;
+}
+
+export {activateSession, ensureSessionActive, getSessionUserId}
