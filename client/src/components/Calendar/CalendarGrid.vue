@@ -10,7 +10,7 @@ interface EventItem {
 const props = defineProps<{ 
   selectedDate: Date; 
   selectedWeek: Date[]; 
-  events: Record<EventItem>; 
+  events: Record<string, EventItem[]>; 
 }>();
 defineEmits<{
   (e: 'selectDay', day: Date): void;
