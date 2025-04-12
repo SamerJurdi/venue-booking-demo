@@ -20,3 +20,11 @@ There are three main roles: Admins, Professors, and Students.
 - Join open reservations.
 - Apply for closed resrevations.
 - Cancel their participation.
+
+# Tech Layers
+This project is divided into three distinct layers, each treated as an independent project:
+- `database`: Contains the database schema, demo data, and a setup guide.
+- `server`: A Node.js backend that manages communication and session management between the client and the database.
+- `client`: A front-end application built with Vue.js using the Vite framework and fully styled with Tailwind CSS.
+
+Each layer is independent, allowing us to scale them at different rates or change a layer if needed, as long as the data structures remain consistent.
