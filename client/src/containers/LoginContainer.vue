@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {LogInForm} from '@/components';
+import { LogInForm } from '@/components'
 
 const props = defineProps({
   onLogin: {
@@ -9,15 +9,14 @@ const props = defineProps({
 })
 
 const login = async (username: string, password: string): Promise<string | null> => {
-
   if (username !== 'admin' || password !== 'password123') {
-    return 'Invalid username or password';
+    return 'Invalid username or password'
   } else {
-    console.log('Attempting login with:', username, password);
-    props.onLogin();
-    return null;
+    console.log('Attempting login with:', username, password)
+    props.onLogin()
+    return null
   }
-};
+}
 </script>
 
 <template>

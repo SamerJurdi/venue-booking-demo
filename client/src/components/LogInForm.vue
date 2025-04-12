@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { ref, defineProps, watch } from 'vue';
+import { ref, defineProps, watch } from 'vue'
 
 interface LoginFunction {
-  (username: string, password: string): Promise<string | null> | string | null;
+  (username: string, password: string): Promise<string | null> | string | null
 }
 
 const props = defineProps<{
-  login: LoginFunction;
-}>();
+  login: LoginFunction
+}>()
 
-const username = ref('');
-const password = ref('');
-const errorMessage = ref('');
+const username = ref('')
+const password = ref('')
+const errorMessage = ref('')
 
 const submit = async () => {
-  const result = await props.login(username.value, password.value);
+  const result = await props.login(username.value, password.value)
   if (result) {
-    errorMessage.value = result;
+    errorMessage.value = result
   }
-};
+}
 
 const clearError = () => {
-  errorMessage.value = '';
-};
+  errorMessage.value = ''
+}
 
 watch([username, password], () => {
-  clearError();
-});
+  clearError()
+})
 </script>
 
 <template>

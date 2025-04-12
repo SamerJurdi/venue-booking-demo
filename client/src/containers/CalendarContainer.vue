@@ -1,77 +1,77 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-import {CalendarHeader, CalendarGrid, NewEventPopup} from '@/components';
+import { ref } from 'vue'
+import { CalendarHeader, CalendarGrid, NewEventPopup } from '@/components'
 
 interface EventItem {
-  title: string;
-  start: string;
-  end: string;
+  title: string
+  start: string
+  end: string
 }
 
-const today = new Date();
-const selectedDate = ref(new Date(today));
-const events = ref<Record<string, EventItem[]>>({});
+const today = new Date()
+const selectedDate = ref(new Date(today))
+const events = ref<Record<string, EventItem[]>>({})
 
 function getWeekForDate(date: Date): Date[] {
-  const start = new Date(date);
-  start.setDate(date.getDate() - date.getDay()); // Sunday
-  const week: Date[] = [];
+  const start = new Date(date)
+  start.setDate(date.getDate() - date.getDay()) // Sunday
+  const week: Date[] = []
   for (let i = 0; i < 7; i++) {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    week.push(d);
+    const d = new Date(start)
+    d.setDate(start.getDate() + i)
+    week.push(d)
   }
-  return week;
+  return week
 }
-const selectedWeek = ref(getWeekForDate(today));
+const selectedWeek = ref(getWeekForDate(today))
 
 function changeMonth(delta: number) {
-  const newDate = new Date(selectedDate.value);
-  newDate.setMonth(newDate.getMonth() + delta);
-  selectedDate.value = newDate;
-  selectedWeek.value = getWeekForDate(newDate);
+  const newDate = new Date(selectedDate.value)
+  newDate.setMonth(newDate.getMonth() + delta)
+  selectedDate.value = newDate
+  selectedWeek.value = getWeekForDate(newDate)
 }
 
 function updateMonthYear(newMonth: number, newYear: number) {
-  const newDate = new Date(selectedDate.value);
-  newDate.setMonth(newMonth);
-  newDate.setFullYear(newYear);
-  selectedDate.value = newDate;
-  selectedWeek.value = getWeekForDate(newDate);
+  const newDate = new Date(selectedDate.value)
+  newDate.setMonth(newMonth)
+  newDate.setFullYear(newYear)
+  selectedDate.value = newDate
+  selectedWeek.value = getWeekForDate(newDate)
 }
 
 function selectDay(day: Date) {
-  selectedWeek.value = getWeekForDate(day);
+  selectedWeek.value = getWeekForDate(day)
 }
 
 function addEvent(date: Date, event: EventItem) {
-  const key = date.toISOString().split('T')[0];
+  const key = date.toISOString().split('T')[0]
   if (!events.value[key]) {
-    events.value[key] = [];
+    events.value[key] = []
   }
-  events.value[key].push(event);
+  events.value[key].push(event)
 }
 
-const showNewEventPopup = ref(false);
-const newEventDate = ref<Date | null>(null);
+const showNewEventPopup = ref(false)
+const newEventDate = ref<Date | null>(null)
 function openNewEvent(date: Date) {
-  newEventDate.value = date;
-  showNewEventPopup.value = true;
+  newEventDate.value = date
+  showNewEventPopup.value = true
 }
 function closeNewEventPopup() {
-  showNewEventPopup.value = false;
+  showNewEventPopup.value = false
 }
 </script>
 
 <template>
   <div class="p-4">
-    <CalendarHeader 
-      :selectedDate="selectedDate" 
+    <CalendarHeader
+      :selectedDate="selectedDate"
       @changeMonth="changeMonth"
       @updateMonthYear="updateMonthYear"
     />
 
-    <CalendarGrid 
+    <CalendarGrid
       :selectedDate="selectedDate"
       :selectedWeek="selectedWeek"
       :events="events"
@@ -79,9 +79,9 @@ function closeNewEventPopup() {
       @openNewEvent="openNewEvent"
     />
 
-    <NewEventPopup 
-      v-if="showNewEventPopup" 
-      :date="newEventDate" 
+    <NewEventPopup
+      v-if="showNewEventPopup"
+      :date="newEventDate"
       @addEvent="addEvent"
       @close="closeNewEventPopup"
     />
