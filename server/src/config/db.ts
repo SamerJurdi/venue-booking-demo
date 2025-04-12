@@ -12,9 +12,9 @@ const pool = new Pool({
 });
 
 // Example method for running a query
-export async function queryDatabase(queryText: string): Promise<any> {
+export async function queryDatabase(queryText: string, params?: any[]): Promise<any> {
   try {
-    const result = await pool.query(queryText);
+    const result = await pool.query(queryText, params);
     return result.rows;
   } catch (error) {
     console.error('Database query error:', error);

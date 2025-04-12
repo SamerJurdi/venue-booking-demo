@@ -1,11 +1,23 @@
 import express, { Request, Response } from 'express';
-import { usersRoute } from './routes/index.js';
+import session from 'express-session';
+import { authRoute } from './routes/index.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use('/api', usersRoute)
+app.use('/api/auth', authRoute)
+app.use(session({
+  // @ts-expect-error
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false, // TODO: Set to true when using HTTPS
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60
+  }
+}));
 
 app.get('/api', (req: Request, res: Response) => {
   res.send('Hello, World!');

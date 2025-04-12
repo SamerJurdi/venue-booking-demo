@@ -1,5 +1,5 @@
-import usersRoute from './users.js';
+import authRoute from './authorization.js';
 
 export {
-  usersRoute,
+  authRoute,
 };
