@@ -6,7 +6,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use('/api/auth', authRoute)
 app.use(session({
   // @ts-expect-error
   secret: process.env.SECRET_KEY,
@@ -19,9 +18,7 @@ app.use(session({
   }
 }));
 
-app.get('/api', (req: Request, res: Response) => {
-  res.send('Hello, World!');
-});
+app.use('/api/auth', authRoute)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
