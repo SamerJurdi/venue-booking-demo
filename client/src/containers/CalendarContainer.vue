@@ -19,7 +19,7 @@ const props = defineProps({
 const today = new Date()
 const selectedDate = ref(new Date(today))
 const events = ref<Record<string, EventItem[]>>({})
-const userId = ref(null);
+const userId = ref(null)
 
 function getWeekForDate(date: Date): Date[] {
   const start = new Date(date)
@@ -72,19 +72,20 @@ function closeNewEventPopup() {
 }
 
 async function setActiveUser() {
-  axios.get('/api/auth/user')
-  .then(function (response) {
-    if (response.status !== 200) {
-      props.onSignIn();
-    } else userId.value = response.data.userId;
-  })
-  .catch(function (error) {
-    props.onSignIn();
-  })
+  axios
+    .get('/api/auth/user')
+    .then(function (response) {
+      if (response.status !== 200) {
+        props.onSignIn()
+      } else userId.value = response.data.userId
+    })
+    .catch(function () {
+      props.onSignIn()
+    })
 }
 
 onMounted(async () => {
-  setActiveUser();
+  setActiveUser()
 })
 </script>
 

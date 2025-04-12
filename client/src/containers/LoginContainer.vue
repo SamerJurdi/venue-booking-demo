@@ -14,7 +14,6 @@ const login = async (username: string, password: string): Promise<string | null>
   if (username.trim() === '' || password.trim() === '') {
     return 'Invalid username or password'
   } else {
-    console.log('Attempting login with:')
     await axios
       .post(`/api/auth/login`, {
         username,
@@ -28,7 +27,6 @@ const login = async (username: string, password: string): Promise<string | null>
         }
       })
       .catch(function (error) {
-        console.log({ error })
         message = error.response.data
       })
     return message
