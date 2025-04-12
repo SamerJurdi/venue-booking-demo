@@ -1,7 +1,11 @@
-import Home from "./Home.vue";
 import Login from "./Login.vue";
+import CalendarGrid from "./Calendar/CalendarGrid.vue";
+import CalendarHeader from "./Calendar/CalendarHeader.vue";
+import NewEventPopup from "./Calendar/NewEventPopup.vue";
 
 export {
-  Home,
   Login,
+  CalendarGrid,
+  CalendarHeader,
+  NewEventPopup,
 };

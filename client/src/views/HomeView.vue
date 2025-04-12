@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {HomeContainer} from '@/containers';
+import {CalendarContainer} from '@/containers';
 </script>
 
 <template>
-  <HomeContainer />
+  <CalendarContainer />
 </template>
