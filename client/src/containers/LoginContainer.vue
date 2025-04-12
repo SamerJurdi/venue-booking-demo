@@ -15,6 +15,7 @@ const login = async (username: string, password: string): Promise<string | null>
   } else {
     console.log('Attempting login with:', username, password);
     props.onLogin();
+    return null;
   }
 };
 </script>
