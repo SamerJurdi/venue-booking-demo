@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { CalendarHeader, CalendarGrid, NewEventPopup } from '@/components'
 
 interface EventItem {
@@ -8,9 +9,17 @@ interface EventItem {
   end: string
 }
 
+const props = defineProps({
+  onSignIn: {
+    type: Function,
+    required: true,
+  },
+})
+
 const today = new Date()
 const selectedDate = ref(new Date(today))
 const events = ref<Record<string, EventItem[]>>({})
+const userId = ref(null);
 
 function getWeekForDate(date: Date): Date[] {
   const start = new Date(date)
@@ -61,6 +70,22 @@ function openNewEvent(date: Date) {
 function closeNewEventPopup() {
   showNewEventPopup.value = false
 }
+
+async function setActiveUser() {
+  axios.get('/api/auth/user')
+  .then(function (response) {
+    if (response.status !== 200) {
+      props.onSignIn();
+    } else userId.value = response.data.userId;
+  })
+  .catch(function (error) {
+    props.onSignIn();
+  })
+}
+
+onMounted(async () => {
+  setActiveUser();
+})
 </script>
 
 <template>
