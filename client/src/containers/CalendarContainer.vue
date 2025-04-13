@@ -72,6 +72,7 @@ async function setActiveUser() {
 
 onMounted(async () => {
   setActiveUser()
+  useBookingStore().updateEvents()
 })
 </script>
 
