@@ -7,11 +7,13 @@ const getInitialState = (): {
   selectedDate: Date
   newEventDate: Date
   events: Record<string, EventItem[]>
+  reservationTypes: Record<string, string>
 } => {
   return {
     selectedDate: new Date(),
     newEventDate: new Date(),
     events: {},
+    reservationTypes: {},
   }
 }
 
@@ -27,14 +29,24 @@ export const useBookingStore = defineStore('booking', {
     },
     async updateEvents() {
       axios.get('/api/reservations').then(response => {
-        console.log({response})
         if (response.status === 200) {
           response.data.reservations.forEach((reservation: any) => {
             this.addEvent(new Date(reservation.start_datetime), {
-              title: reservation.type_id,
+              title: this.reservationTypes[reservation.type_id],
               start: formatTime(new Date(reservation.start_datetime)),
               end: formatTime(new Date(reservation.end_datetime))
             })
+          })
+        }
+      })
+    },
+    async getReservationTypes() {
+      axios.get('/api/reservations/types').then(response => {
+        if (response.status === 200) {
+          response.data.reservationTypes.forEach((reservationType: any) => {
+            let key = reservationType.id;
+            let value = reservationType.name;
+            this.reservationTypes[key] = value
           })
         }
       })

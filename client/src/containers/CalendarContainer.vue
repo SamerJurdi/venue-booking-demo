@@ -12,7 +12,7 @@ const props = defineProps({
   },
 })
 
-const { selectedDate, newEventDate, events } = storeToRefs(useBookingStore())
+const { selectedDate, newEventDate, events, reservationTypes } = storeToRefs(useBookingStore())
 
 const userId = ref(null)
 
@@ -72,6 +72,7 @@ async function setActiveUser() {
 
 onMounted(async () => {
   setActiveUser()
+  await useBookingStore().getReservationTypes()
   useBookingStore().updateEvents()
 })
 </script>
@@ -95,6 +96,7 @@ onMounted(async () => {
     <NewEventPopup
       v-if="showNewEventPopup"
       :date="newEventDate"
+      :types="reservationTypes"
       @addEvent="useBookingStore().addEvent"
       @close="closeNewEventPopup"
     />
