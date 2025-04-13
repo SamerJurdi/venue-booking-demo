@@ -2,7 +2,7 @@
 import { ref, defineProps, watch } from 'vue'
 
 interface LoginFunction {
-  (username: string, password: string): Promise<string | null> | string | null
+  (username: string, password: string): Promise<void>
 }
 
 const props = defineProps<{
@@ -11,22 +11,10 @@ const props = defineProps<{
 
 const username = ref('')
 const password = ref('')
-const errorMessage = ref('')
 
-const submit = async () => {
-  const result = await props.login(username.value, password.value)
-  if (result) {
-    errorMessage.value = result
-  }
+const submit = () => {
+  props.login(username.value, password.value)
 }
-
-const clearError = () => {
-  errorMessage.value = ''
-}
-
-watch([username, password], () => {
-  clearError()
-})
 </script>
 
 <template>
@@ -38,7 +26,6 @@ watch([username, password], () => {
             type="text"
             placeholder="Username"
             v-model="username"
-            @input="clearError"
             class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
@@ -47,12 +34,8 @@ watch([username, password], () => {
             type="password"
             placeholder="Password"
             v-model="password"
-            @input="clearError"
             class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
-        </div>
-        <div v-if="errorMessage" class="mb-4 text-red-500 text-sm">
-          {{ errorMessage }}
         </div>
         <button
           type="submit"
