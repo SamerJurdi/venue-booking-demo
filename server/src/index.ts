@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import session from 'express-session';
-import { authRoute } from './routes/index.js';
+import { authRoute, reservationRoute } from './routes/index.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,6 +19,7 @@ app.use(session({
 }));
 
 app.use('/api/auth', authRoute)
+app.use('/api/reservations', reservationRoute)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
