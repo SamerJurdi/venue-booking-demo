@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
-interface EventItem {
-  title: string
-  start: string
-  end: string
-}
+import type { EventItem } from '@/common/CustomTypes'
 
 const props = defineProps<{
   selectedDate: Date

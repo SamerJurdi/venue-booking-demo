@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import axios from 'axios'
+import { useBookingStore } from '@/stores/BookingStore'
 import { CalendarHeader, CalendarGrid, NewEventPopup } from '@/components'
-
-interface EventItem {
-  title: string
-  start: string
-  end: string
-}
 
 const props = defineProps({
   onSignIn: {
@@ -16,9 +12,8 @@ const props = defineProps({
   },
 })
 
-const today = new Date()
-const selectedDate = ref(new Date(today))
-const events = ref<Record<string, EventItem[]>>({})
+const { selectedDate, newEventDate, events } = storeToRefs(useBookingStore())
+
 const userId = ref(null)
 
 function getWeekForDate(date: Date): Date[] {
@@ -32,7 +27,7 @@ function getWeekForDate(date: Date): Date[] {
   }
   return week
 }
-const selectedWeek = ref(getWeekForDate(today))
+const selectedWeek = ref(getWeekForDate(selectedDate.value))
 
 function changeMonth(delta: number) {
   const newDate = new Date(selectedDate.value)
@@ -53,16 +48,7 @@ function selectDay(day: Date) {
   selectedWeek.value = getWeekForDate(day)
 }
 
-function addEvent(date: Date, event: EventItem) {
-  const key = date.toISOString().split('T')[0]
-  if (!events.value[key]) {
-    events.value[key] = []
-  }
-  events.value[key].push(event)
-}
-
 const showNewEventPopup = ref(false)
-const newEventDate = ref<Date | null>(null)
 function openNewEvent(date: Date) {
   newEventDate.value = date
   showNewEventPopup.value = true
@@ -108,7 +94,7 @@ onMounted(async () => {
     <NewEventPopup
       v-if="showNewEventPopup"
       :date="newEventDate"
-      @addEvent="addEvent"
+      @addEvent="useBookingStore().addEvent"
       @close="closeNewEventPopup"
     />
   </div>

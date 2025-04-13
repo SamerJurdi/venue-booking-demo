@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
-interface EventItem {
-  title: string
-  start: string
-  end: string
-}
+import type { EventItem } from '@/common/CustomTypes'
 
 const props = defineProps<{ date: Date | null }>()
 const emit = defineEmits<{
