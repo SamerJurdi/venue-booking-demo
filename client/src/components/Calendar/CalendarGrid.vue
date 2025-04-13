@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
+import { formatDate } from '@/common/Functions';
 
 const props = defineProps<{
   selectedDate: Date
@@ -54,7 +55,7 @@ const monthGrid = computed(() => {
           <div class="mt-4 space-y-1">
             <template
               :key="event.start + event.end"
-              v-for="(event, index) in props.events[day.toISOString().split('T')[0]] || []"
+              v-for="(event, index) in props.events[formatDate(day)] || []"
             >
               <div v-if="index < 4" class="bg-blue-200 text-xs text-blue-800 rounded px-1 truncate">
                 {{ event.title }}
@@ -76,7 +77,7 @@ const monthGrid = computed(() => {
           <div class="mt-8 h-24 overflow-y-auto space-y-1">
             <template
               :key="event.start + event.end"
-              v-for="event in props.events[day.toISOString().split('T')[0]] || []"
+              v-for="event in props.events[formatDate(day)] || []"
             >
               <div class="bg-blue-100 text-xs text-blue-700 rounded px-1 py-0.5">
                 <div>{{ event.title }}</div>
