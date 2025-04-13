@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import type { EventItem } from '@/common/CustomTypes'
-import { formatTime } from '@/common/Functions'
+import { formatDate, formatTime } from '@/common/Functions'
 
 const getInitialState = (): {
   selectedDate: Date
@@ -21,7 +21,7 @@ export const useBookingStore = defineStore('booking', {
   state: getInitialState,
   actions: {
     addEvent(date: Date, event: EventItem) {
-      const key = date.toISOString().split('T')[0]
+      const key = formatDate(date)
       if (!this.events[key]) {
         this.events[key] = []
       }

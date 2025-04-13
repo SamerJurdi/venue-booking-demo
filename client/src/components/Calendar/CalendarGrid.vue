@@ -14,7 +14,7 @@ defineEmits<{
 }>()
 
 const selectedWeekSet = computed(() => {
-  return new Set(props.selectedWeek.map((d) => d.toISOString().split('T')[0]))
+  return new Set(props.selectedWeek.map((d) => formatDate(d)))
 })
 
 // Start from the nearest Sunday before the first day of the month and end on the Saturday after the last day of the month.
@@ -44,11 +44,11 @@ const monthGrid = computed(() => {
     <div class="grid grid-cols-7 gap-1">
       <div
         v-for="day in monthGrid"
-        :key="day.toISOString()"
+        :key="formatDate(day)"
         @click="$emit('selectDay', day)"
         class="border relative cursor-pointer hover:bg-gray-100 p-2"
       >
-        <template v-if="!selectedWeekSet.has(day.toISOString().split('T')[0])">
+        <template v-if="!selectedWeekSet.has(formatDate(day))">
           <div class="text-sm absolute top-1 left-1">
             {{ day.getDate() }}
           </div>
