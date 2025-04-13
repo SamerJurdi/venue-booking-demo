@@ -80,7 +80,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="h-screen p-4">
     <CalendarHeader
       :selectedDate="selectedDate"
       @changeMonth="changeMonth"

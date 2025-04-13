@@ -40,8 +40,7 @@ const monthGrid = computed(() => {
 </script>
 
 <template>
-  <div>
-    <div class="grid grid-cols-7 gap-1">
+    <div class="grid grid-cols-7 gap-1 h-7/9">
       <div
         v-for="day in monthGrid"
         :key="formatDate(day)"
@@ -52,7 +51,7 @@ const monthGrid = computed(() => {
           <div class="text-sm absolute top-1 left-1">
             {{ day.getDate() }}
           </div>
-          <div class="mt-4 space-y-1">
+          <div class="mt-4 h-15 space-y-1">
             <template
               :key="event.start + event.end"
               v-for="(event, index) in props.events[formatDate(day)] || []"
@@ -74,7 +73,7 @@ const monthGrid = computed(() => {
               +
             </button>
           </div>
-          <div class="mt-8 h-24 overflow-y-auto space-y-1">
+          <div class="mt-8 h-50 overflow-y-auto space-y-1">
             <template
               :key="event.start + event.end"
               v-for="event in props.events[formatDate(day)] || []"
@@ -88,5 +87,4 @@ const monthGrid = computed(() => {
         </template>
       </div>
     </div>
-  </div>
 </template>
