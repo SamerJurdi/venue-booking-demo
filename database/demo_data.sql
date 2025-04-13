@@ -48,3 +48,15 @@ INSERT INTO "VenueType" (venue_id, type_id) VALUES
 (1, 'largeVenue'),
 (2, 'midSizeVenue'),
 (3, 'smallVenue');
+
+-- Insert reservation
+INSERT INTO "Reservation" (start_datetime, end_datetime, type_id, organizer_id, venue_id, parent_reservation_id)
+VALUES
+('2025-04-16 09:00:00', '2025-04-16 10:00:00', 'meetingReservation', 4, 1, NULL),
+('2025-04-16 09:00:00', '2025-04-16 10:00:00', 'meetingReservation', 4, 1, 1),
+('2025-04-16 11:00:00', '2025-04-16 12:30:00', 'eventReservation', 2, 1, NULL),
+('2025-04-17 09:00:00', '2025-04-17 10:00:00', 'meetingReservation', 4, 1, 1),
+('2025-04-17 10:00:00', '2025-04-17 11:00:00', 'eventReservation', 4, 1, NULL),
+('2025-04-17 13:00:00', '2025-04-17 14:00:00', 'conferenceReservation', 2, 1, NULL);
+('2025-04-18 09:00:00', '2025-04-18 10:00:00', 'meetingReservation', 4, 1, 1),
+('2025-04-18 15:00:00', '2025-04-18 16:00:00', 'conferenceReservation', 4, 1, NULL);
