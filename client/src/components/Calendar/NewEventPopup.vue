@@ -16,7 +16,7 @@ const sampleEventItem = {
 
 const props = defineProps<{
   date: Date
-  types: Record<string, string>
+  types: {key: string, value: string}[]
 }>()
 const emit = defineEmits<{
   (e: 'addEvent', date: Date, event: EventItem): void
@@ -24,7 +24,7 @@ const emit = defineEmits<{
 }>()
 
 const title = ref('')
-const type = ref('')
+const type = ref<{key?: string, value?: string}>({})
 const description = ref('')
 const startTime = ref('')
 const endTime = ref('')
@@ -41,7 +41,7 @@ const submitEvent = () => {
   })
 
   title.value = ''
-  type.value = ''
+  type.value = {}
   description.value = ''
   startTime.value = ''
   endTime.value = ''
@@ -57,8 +57,8 @@ const submitEvent = () => {
         <label for="eventType" class="block mb-1 font-medium">Type</label>
         <select id="eventType" v-model="type" class="w-full px-2 py-1 border rounded">
           <option value="" disabled>Select booking type</option>
-          <option v-for="(display, key) in props.types" :key="key" :value="key">
-            {{ display }}
+          <option v-for="type in props.types" :key="type.key" :value="type.key">
+            {{ type.value }}
           </option>
         </select>
       </div>

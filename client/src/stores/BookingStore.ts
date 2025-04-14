@@ -7,12 +7,6 @@ import { formatDate, formatTime } from '@/common/Functions'
 const toast = useToast()
 
 const sampleEventItem = {
-  title: 'English 101',
-  start: '09:00',
-  end: '10:30',
-  type: 'meeting',
-  organizer: 'Professor Smith',
-  description: 'This is a sample event description. Please be sure to notify us of your attendance!',
   participantsMandatory: [
     { name: 'Alice Johnson', status: 'Confirmed' },
     { name: 'Bob Williams', status: 'Pending' },
@@ -27,13 +21,13 @@ const getInitialState = (): {
   selectedDate: Date
   newEventDate: Date
   events: Record<string, EventItem[]>
-  reservationTypes: Record<string, string>
+  reservationTypes: {key: string, value: string}[]
 } => {
   return {
     selectedDate: new Date(),
     newEventDate: new Date(),
     events: {},
-    reservationTypes: {},
+    reservationTypes: [],
   }
 }
 
@@ -57,7 +51,7 @@ export const useBookingStore = defineStore('booking', {
               title: reservation.title,
               description: reservation.description || '',
               organizer: reservation.organizer,
-              type: this.reservationTypes[reservation.type_id],
+              type: {key: reservation.type_id, value: reservation.type},
               start: formatTime(new Date(reservation.start_datetime)),
               end: formatTime(new Date(reservation.end_datetime)),
             })
@@ -66,12 +60,13 @@ export const useBookingStore = defineStore('booking', {
       }).catch(error => toast.error(error.response.data.message || 'Something went wrong!'))
     },
     async getReservationTypes() {
+      this.reservationTypes = getInitialState().reservationTypes
       axios.get('/api/reservations/types').then((response) => {
         if (response.status === 200) {
           response.data.reservationTypes.forEach((reservationType: any) => {
             const key = reservationType.id
             const value = reservationType.name
-            this.reservationTypes[key] = value
+            this.reservationTypes.push({key, value})
           })
         } else toast.error(response.data.message || 'Something went wrong!')
       }).catch(error => toast.error(error.response.data.message || 'Something went wrong!'))
