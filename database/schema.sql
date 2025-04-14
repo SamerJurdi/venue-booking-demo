@@ -51,6 +51,8 @@ CREATE TABLE "VenueType" (
 
 CREATE TABLE "Reservation" (
   id                   SERIAL PRIMARY KEY,
+  title                VARCHAR(255) NOT NULL,
+  description          TEXT,
   start_datetime       TIMESTAMP NOT NULL,
   end_datetime         TIMESTAMP NOT NULL,
   type_id              VARCHAR(255) NOT NULL,
@@ -84,3 +86,21 @@ CREATE TABLE "ReservationParticipants" (
   CONSTRAINT fk_status FOREIGN KEY (status_id)
     REFERENCES "Type"(id)
 );
+
+CREATE VIEW "ReservationAndOrganizer" AS
+SELECT
+  r.id,
+  r.title,
+  r.description,
+  r.start_datetime,
+  r.end_datetime,
+  r.type_id,
+  r.organizer_id,
+  r.venue_id,
+  r.parent_reservation_id,
+  r.created_at,
+  r.updated_at,
+  (COALESCE(u.prefix || ' ', '') || u.first_name || ' ' || u.last_name) AS organizer
+FROM "Reservation" r
+LEFT JOIN "User" u
+  ON r.organizer_id = u.id;
