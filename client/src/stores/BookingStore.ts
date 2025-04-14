@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import { useToast } from 'vue-toastification'
 import type { EventItem } from '@/common/CustomTypes'
 import { formatDate, formatTime } from '@/common/Functions'
+
+const toast = useToast()
 
 const getInitialState = (): {
   selectedDate: Date
@@ -28,6 +31,7 @@ export const useBookingStore = defineStore('booking', {
       this.events[key].push(event)
     },
     async updateEvents() {
+      this.events = getInitialState().events
       axios.get('/api/reservations').then((response) => {
         if (response.status === 200) {
           response.data.reservations.forEach((reservation: any) => {
@@ -37,8 +41,8 @@ export const useBookingStore = defineStore('booking', {
               end: formatTime(new Date(reservation.end_datetime)),
             })
           })
-        }
-      })
+        } else toast.error(response.data.message || 'Something went wrong!')
+      }).catch(error => toast.error(error.response.data.message || 'Something went wrong!'))
     },
     async getReservationTypes() {
       axios.get('/api/reservations/types').then((response) => {
@@ -48,8 +52,8 @@ export const useBookingStore = defineStore('booking', {
             const value = reservationType.name
             this.reservationTypes[key] = value
           })
-        }
-      })
+        } else toast.error(response.data.message || 'Something went wrong!')
+      }).catch(error => toast.error(error.response.data.message || 'Something went wrong!'))
     },
   },
 })

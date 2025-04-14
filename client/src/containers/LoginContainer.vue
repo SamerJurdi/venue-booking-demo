@@ -13,10 +13,8 @@ const props = defineProps({
 const toast = useToast()
 
 const login = async (username: string, password: string): Promise<void> => {
-  let message
   if (username.trim() === '' || password.trim() === '') {
-    message = 'Invalid username or password'
-    toast.error(message, { position: POSITION.TOP_CENTER })
+    toast.error('Invalid username or password', { position: POSITION.TOP_CENTER })
   } else {
     await axios
       .post(`/api/auth/login`, {
@@ -27,13 +25,11 @@ const login = async (username: string, password: string): Promise<void> => {
         if (response.status === 200) {
           props.onLogin()
         } else {
-          message = 'Log in failed. Status: ' + response.status
-          toast.error(message, { position: POSITION.TOP_CENTER })
+          toast.error(response.data.message, { position: POSITION.TOP_CENTER })
         }
       })
       .catch(function (error) {
-        message = error.response.data
-        toast.error(message, { position: POSITION.TOP_CENTER })
+        toast.error(error.response.data.message, { position: POSITION.TOP_CENTER })
       })
   }
 }
