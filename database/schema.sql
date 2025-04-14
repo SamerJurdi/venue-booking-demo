@@ -59,6 +59,7 @@ CREATE TABLE "Reservation" (
   organizer_id         INTEGER,
   venue_id             INTEGER,
   parent_reservation_id INTEGER,
+  is_visible           BOOLEAN NOT NULL DEFAULT TRUE,
   created_at           TIMESTAMP NOT NULL DEFAULT now(),
   updated_at           TIMESTAMP NOT NULL DEFAULT now(),
   CONSTRAINT fk_reservation_type FOREIGN KEY (type_id)
@@ -98,6 +99,7 @@ SELECT
   r.organizer_id,
   r.venue_id,
   r.parent_reservation_id,
+  r.is_visible,
   r.created_at,
   r.updated_at,
   (COALESCE(u.prefix || ' ', '') || u.first_name || ' ' || u.last_name) AS organizer
