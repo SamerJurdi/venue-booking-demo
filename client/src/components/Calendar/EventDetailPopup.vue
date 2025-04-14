@@ -15,7 +15,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div class="bg-white rounded shadow-lg w-3/5 h-4/5 flex flex-col">
       <div class="flex justify-between items-center p-4 border-b">
         <h2 class="text-xl font-bold">Event Details</h2>
