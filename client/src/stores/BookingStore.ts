@@ -71,5 +71,28 @@ export const useBookingStore = defineStore('booking', {
         } else toast.error(response.data.message || 'Something went wrong!')
       }).catch(error => toast.error(error.response.data.message || 'Something went wrong!'))
     },
+    async bookReservation(date: Date, event: EventItem) {
+      const body = {
+        startDate: formatDate(date) + 'T' + event.start + ':00.000Z',
+        endDate: formatDate(date) + 'T' + event.end + ':00.000Z',
+        typeId: event.type.key,
+        venueId: "1",
+        title: event.title,
+        description: event.description,
+      }
+
+      axios.post(`/api/reservations/create`, body).then(response => {
+        if (response.status === 201) {
+          this.addEvent(date, event)
+          toast.success(response.data.message)
+        } else {
+          toast.error(response.data.message || 'Something went wrong!')
+          this.updateEvents()
+        }
+      }).catch(error => {
+        toast.error(error.response.data.message || 'Something went wrong!')
+        this.updateEvents()
+      })
+    }
   },
 })

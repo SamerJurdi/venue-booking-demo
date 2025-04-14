@@ -57,7 +57,7 @@ const submitEvent = () => {
         <label for="eventType" class="block mb-1 font-medium">Type</label>
         <select id="eventType" v-model="type" class="w-full px-2 py-1 border rounded">
           <option value="" disabled>Select booking type</option>
-          <option v-for="type in props.types" :key="type.key" :value="type.key">
+          <option v-for="type in props.types" :key="type.key" :value="type">
             {{ type.value }}
           </option>
         </select>

@@ -106,7 +106,7 @@ onMounted(async () => {
       v-if="showNewEventPopup"
       :date="newEventDate"
       :types="reservationTypes"
-      @addEvent="useBookingStore().addEvent"
+      @addEvent="useBookingStore().bookReservation"
       @close="closeNewEventPopup"
     />
   </div>
