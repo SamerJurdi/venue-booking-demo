@@ -96,6 +96,7 @@ SELECT
   r.start_datetime,
   r.end_datetime,
   r.type_id,
+  t.name AS type,
   r.organizer_id,
   r.venue_id,
   r.parent_reservation_id,
@@ -104,5 +105,5 @@ SELECT
   r.updated_at,
   (COALESCE(u.prefix || ' ', '') || u.first_name || ' ' || u.last_name) AS organizer
 FROM "Reservation" r
-LEFT JOIN "User" u
-  ON r.organizer_id = u.id;
+LEFT JOIN "User" u ON r.organizer_id = u.id
+LEFT JOIN "Type" t ON r.type_id = t.id;
