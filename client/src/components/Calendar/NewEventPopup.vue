@@ -2,6 +2,18 @@
 import { ref } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
 
+const sampleEventItem = {
+  organizedBy: 'Professor Smith',
+  participantsMandatory: [
+    { name: 'Alice Johnson', status: 'Confirmed' },
+    { name: 'Bob Williams', status: 'Pending' },
+  ],
+  participantsOptional: [
+    { name: 'Charlie Brown', status: 'Invited' },
+    { name: 'Diana Prince', status: 'Invited' },
+  ]
+}
+
 const props = defineProps<{
   date: Date
   types: Record<string, string>
@@ -12,18 +24,25 @@ const emit = defineEmits<{
 }>()
 
 const title = ref('')
+const type = ref('')
+const description = ref('')
 const startTime = ref('')
 const endTime = ref('')
 
 const submitEvent = () => {
-  if (!props.date || !title.value || !startTime.value || !endTime.value) return
+  if (!props.date || !title.value || !startTime.value || !endTime.value || !type.value) return
   emit('addEvent', props.date, {
+    ...sampleEventItem,
     title: title.value,
+    type: type.value,
+    description: description.value,
     start: startTime.value,
     end: endTime.value,
   })
 
   title.value = ''
+  type.value = ''
+  description.value = ''
   startTime.value = ''
   endTime.value = ''
   emit('close')
@@ -36,13 +55,36 @@ const submitEvent = () => {
       <h2 class="text-lg font-bold mb-4">New Event on {{ props.date.toDateString() }}</h2>
       <div class="mb-2">
         <label for="eventType" class="block mb-1 font-medium">Type</label>
-        <select id="eventType" v-model="title" class="w-full px-2 py-1 border rounded">
+        <select id="eventType" v-model="type" class="w-full px-2 py-1 border rounded">
           <option value="" disabled>Select booking type</option>
           <option v-for="(display, key) in props.types" :key="key" :value="key">
             {{ display }}
           </option>
         </select>
       </div>
+
+      <div class="mb-2">
+        <label for="title" class="block mb-1 font-medium">Title</label>
+        <input
+          id="title"
+          type="text"
+          v-model="title"
+          placeholder="Enter event title"
+          class="w-full px-2 py-1 border rounded"
+        />
+      </div>
+
+      <div class="mb-2">
+        <label for="eventDescription" class="block mb-1 font-medium">Description</label>
+        <textarea
+          id="eventDescription"
+          v-model="description"
+          placeholder="Enter event description (optional)"
+          class="w-full px-2 py-1 border rounded"
+          rows="3"
+        ></textarea>
+      </div>
+
       <div class="mb-2">
         <input type="time" v-model="startTime" class="w-full px-2 py-1 border rounded" />
       </div>

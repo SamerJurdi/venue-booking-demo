@@ -6,6 +6,23 @@ import { formatDate, formatTime } from '@/common/Functions'
 
 const toast = useToast()
 
+const sampleEventItem = {
+  title: 'English 101',
+  start: '09:00',
+  end: '10:30',
+  type: 'meeting',
+  organizedBy: 'Professor Smith',
+  description: 'This is a sample event description. Please be sure to notify us of your attendance!',
+  participantsMandatory: [
+    { name: 'Alice Johnson', status: 'Confirmed' },
+    { name: 'Bob Williams', status: 'Pending' },
+  ],
+  participantsOptional: [
+    { name: 'Charlie Brown', status: 'Invited' },
+    { name: 'Diana Prince', status: 'Invited' },
+  ]
+}
+
 const getInitialState = (): {
   selectedDate: Date
   newEventDate: Date
@@ -36,6 +53,7 @@ export const useBookingStore = defineStore('booking', {
         if (response.status === 200) {
           response.data.reservations.forEach((reservation: any) => {
             this.addEvent(new Date(reservation.start_datetime), {
+              ...sampleEventItem,
               title: this.reservationTypes[reservation.type_id],
               start: formatTime(new Date(reservation.start_datetime)),
               end: formatTime(new Date(reservation.end_datetime)),

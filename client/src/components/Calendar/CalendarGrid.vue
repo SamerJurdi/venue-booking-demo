@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
 import { formatDate } from '@/common/Functions'
+import { EventDetailPopup } from '@/components';
 
 const props = defineProps<{
   selectedDate: Date
@@ -17,7 +18,6 @@ const selectedWeekSet = computed(() => {
   return new Set(props.selectedWeek.map((d) => formatDate(d)))
 })
 
-// Start from the nearest Sunday before the first day of the month and end on the Saturday after the last day of the month.
 const monthGrid = computed(() => {
   const year = props.selectedDate.getFullYear()
   const month = props.selectedDate.getMonth()
@@ -37,54 +37,69 @@ const monthGrid = computed(() => {
   }
   return days
 })
+
+const showEventPopup = ref(false)
+const selectedEventDetail = ref<EventItem>()
+
+function openEventDetail(event: EventItem) {
+  selectedEventDetail.value = {...event}
+  showEventPopup.value = true
+}
 </script>
 
 <template>
-  <div class="grid grid-cols-7 gap-1 h-7/9">
-    <div
-      v-for="day in monthGrid"
-      :key="formatDate(day)"
-      @click="$emit('selectDay', day)"
-      class="border relative cursor-pointer hover:bg-gray-100 p-2"
-    >
-      <template v-if="!selectedWeekSet.has(formatDate(day))">
-        <div class="text-sm absolute top-1 left-1">
-          {{ day.getDate() }}
-        </div>
-        <div class="mt-4 h-15 space-y-1">
-          <template
+    <div class="grid grid-cols-7 gap-1 h-7/9">
+      <div
+        v-for="day in monthGrid"
+        :key="formatDate(day)"
+        @click="$emit('selectDay', day)"
+        class="border relative cursor-pointer hover:bg-gray-100 p-2"
+      >
+        <template v-if="!selectedWeekSet.has(formatDate(day))">
+          <div class="text-sm absolute top-1 left-1">
+            {{ day.getDate() }}
+          </div>
+          <div class="mt-4 h-20 space-y-1">
+            <template
             :key="event.start + event.end"
             v-for="(event, index) in props.events[formatDate(day)] || []"
-          >
-            <div v-if="index < 4" class="bg-blue-200 text-xs text-blue-800 rounded px-1 truncate">
-              {{ event.title }}
-            </div>
-          </template>
-        </div>
-      </template>
+            >
+              <div v-if="index < 4" class="bg-blue-200 text-xs text-blue-800 rounded px-1 truncate">
+                {{ event.title }}
+              </div>
+            </template>
+          </div>
+        </template>
 
-      <template v-else>
-        <div class="relative">
-          <span class="text-lg font-bold absolute top-1 left-1">{{ day.getDate() }}</span>
-          <button
-            class="absolute top-1 right-1 text-xl text-green-500 hover:text-green-600"
-            @click.stop="$emit('openNewEvent', day)"
-          >
-            +
-          </button>
-        </div>
-        <div class="mt-8 h-50 overflow-y-auto space-y-1">
-          <template
+        <template v-else>
+          <div class="relative">
+            <span class="text-lg font-bold absolute top-1 left-1">{{ day.getDate() }}</span>
+            <button
+              class="absolute top-1 right-1 text-xl text-green-500 hover:text-green-600"
+              @click.stop="$emit('openNewEvent', day)"
+            >
+              +
+            </button>
+          </div>
+          <div class="mt-8 h-50 overflow-y-auto space-y-1">
+            <template
             :key="event.start + event.end"
             v-for="event in props.events[formatDate(day)] || []"
-          >
-            <div class="bg-blue-100 text-xs text-blue-700 rounded px-1 py-0.5">
-              <div>{{ event.title }}</div>
-              <div>{{ event.start }} - {{ event.end }}</div>
-            </div>
-          </template>
-        </div>
-      </template>
+            >
+              <div class="bg-blue-100 text-xs text-blue-700 rounded px-1 py-0.5 cursor-pointer"
+                   @click.stop="openEventDetail(event)">
+                <div>{{ event.title }}</div>
+                <div>{{ event.start }} - {{ event.end }}</div>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
     </div>
-  </div>
+
+    <EventDetailPopup
+      v-if="showEventPopup && selectedEventDetail"
+      :event="selectedEventDetail"
+      @close="showEventPopup = false"
+    />
 </template>
