@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
-import { formatDate } from '@/common/Functions'
+import { formatDate, getTypeBgColor100, getTypeBgColor200, getTypeTextColor700, getTypeTextColor800 } from '@/common/Functions'
 import { EventDetailPopup } from '@/components';
 
 const props = defineProps<{
@@ -64,7 +64,7 @@ function openEventDetail(event: EventItem) {
             :key="event.start + event.end"
             v-for="(event, index) in props.events[formatDate(day)] || []"
             >
-              <div v-if="index < 4" class="bg-blue-200 text-xs text-blue-800 rounded px-1 truncate">
+              <div v-if="index < 4" :class="[getTypeBgColor200(event.type.value), 'text-xs', getTypeTextColor800(event.type.value), 'rounded px-1 truncate']">
                 {{ event.title }}
               </div>
             </template>
@@ -86,7 +86,7 @@ function openEventDetail(event: EventItem) {
             :key="event.start + event.end"
             v-for="event in props.events[formatDate(day)] || []"
             >
-              <div class="bg-blue-100 text-xs text-blue-700 rounded px-1 py-0.5 cursor-pointer"
+              <div :class="[getTypeBgColor100(event.type.value), 'text-xs', getTypeTextColor700(event.type.value), 'rounded px-1 py-0.5 cursor-pointer']"
                    @click.stop="openEventDetail(event)">
                 <div>{{ event.title }}</div>
                 <div>{{ event.start }} - {{ event.end }}</div>

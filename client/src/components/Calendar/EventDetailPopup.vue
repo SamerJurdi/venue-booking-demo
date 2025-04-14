@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
 import type { EventItem } from '@/common/CustomTypes'
+import { getTypeBgColor200 } from '@/common/Functions'
 import { ParticipantCard } from '@/components';
 
 const props = defineProps<{
@@ -11,15 +12,6 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-function getTypeColor(type: string): string {
-  const colors: Record<string, string> = {
-    meeting: 'bg-blue-200',
-    appointment: 'bg-green-200',
-    reminder: 'bg-yellow-200',
-    call: 'bg-purple-200',
-  };
-  return colors[type] || 'bg-gray-200';
-}
 </script>
 
 <template>
@@ -36,8 +28,8 @@ function getTypeColor(type: string): string {
             <h3 class="text-2xl font-bold">{{ props.event.title }}</h3>
             <div class="flex items-center space-x-2">
               <span class="text-sm font-medium">Type:</span>
-              <span :class="['px-2 py-1 rounded', getTypeColor(props.event.type), 'text-xs']">
-                {{ props.event.type }}
+              <span :class="['px-2 py-1 rounded', getTypeBgColor200(props.event.type.value), 'text-xs']">
+                {{ props.event.type.value }}
               </span>
             </div>
           </div>
