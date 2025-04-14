@@ -8,10 +8,12 @@ const props = defineProps<{
   selectedDate: Date
   selectedWeek: Date[]
   events: Record<string, EventItem[]>
+  checkOwner: Function
 }>()
 defineEmits<{
   (e: 'selectDay', day: Date): void
   (e: 'openNewEvent', day: Date): void
+  (e: 'deleteEvent', event: EventItem): void
 }>()
 
 const selectedWeekSet = computed(() => {
@@ -100,6 +102,8 @@ function openEventDetail(event: EventItem) {
     <EventDetailPopup
       v-if="showEventPopup && selectedEventDetail"
       :event="selectedEventDetail"
+      :showDeleteButton="checkOwner(selectedEventDetail.organizer.key)"
       @close="showEventPopup = false"
+      @deleteEvent="(event: EventItem) => $emit('deleteEvent', event)"
     />
 </template>

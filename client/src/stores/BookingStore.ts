@@ -50,7 +50,7 @@ export const useBookingStore = defineStore('booking', {
               ...sampleEventItem,
               title: reservation.title,
               description: reservation.description || '',
-              organizer: reservation.organizer,
+              organizer: {key: reservation.organizer_id, value: reservation.organizer},
               type: {key: reservation.type_id, value: reservation.type},
               start: formatTime(new Date(reservation.start_datetime)),
               end: formatTime(new Date(reservation.end_datetime)),
@@ -93,6 +93,21 @@ export const useBookingStore = defineStore('booking', {
         toast.error(error.response.data.message || 'Something went wrong!')
         this.updateEvents()
       })
+    },
+    async deleteReservation(reservationId: string) {
+      toast.success('Reservation Deleted!')
+      // axios.delete(`/api/reservations/delete/` + reservationId).then(response => {
+      //   if (response.status === 201) {
+      //     this.updateEvents()
+      //     toast.success(response.data.message)
+      //   } else {
+      //     toast.error(response.data.message || 'Something went wrong!')
+      //     this.updateEvents()
+      //   }
+      // }).catch(error => {
+      //   toast.error(error.response.data.message || 'Something went wrong!')
+      //   this.updateEvents()
+      // })
     }
   },
 })

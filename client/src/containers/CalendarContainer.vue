@@ -98,8 +98,10 @@ onMounted(async () => {
       :selectedDate="selectedDate"
       :selectedWeek="selectedWeek"
       :events="events"
+      :checkOwner="(ownerId: string): boolean => ownerId === userId"
       @selectDay="selectDay"
       @openNewEvent="openNewEvent"
+      @deleteEvent="useBookingStore()."
     />
 
     <NewEventPopup

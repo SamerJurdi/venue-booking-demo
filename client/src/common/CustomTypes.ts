@@ -1,7 +1,7 @@
 interface EventItem {
   title: string;
   type: {key?: string, value?: string};
-  organizer: string;
+  organizer: {key?: string, value?: string};
   description: string;
   start: string;
   end: string;

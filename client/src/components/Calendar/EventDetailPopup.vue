@@ -6,12 +6,13 @@ import { ParticipantCard } from '@/components';
 
 const props = defineProps<{
   event: EventItem;
+  showDeleteButton: boolean;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'close'): void;
+  (e: 'deleteEvent', event: EventItem): void;
 }>();
-
 </script>
 
 <template>
@@ -35,15 +36,22 @@ const emit = defineEmits<{
           </div>
           <div class="mb-4">
             <span class="block text-sm font-medium">Organized by:</span>
-            <span class="text-sm">{{ props.event.organizer }}</span>
+            <span class="text-sm">{{ props.event.organizer.value }}</span>
           </div>
           <div class="mb-4">
             <span class="block text-sm font-medium">Time:</span>
             <span class="text-sm">{{ props.event.start }} - {{ props.event.end }}</span>
           </div>
-          <div>
+          <div class="mb-4">
             <span class="block text-sm font-medium mb-1">Description:</span>
-            <textarea readonly class="w-full h-32 p-2 border rounded resize-none" :value="props.event.description"></textarea>
+            <textarea readonly class="w-full h-32 p-2 border rounded resize-none"
+                      :value="props.event.description"></textarea>
+          </div>
+          <div v-if="showDeleteButton" class="mt-4 flex justify-center">
+            <button @click="$emit('deleteEvent', props.event)"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+              Delete
+            </button>
           </div>
         </div>
 
