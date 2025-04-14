@@ -1,7 +1,7 @@
 interface EventItem {
   title: string;
   type: string;
-  organizedBy: string;
+  organizer: string;
   description: string;
   start: string;
   end: string;

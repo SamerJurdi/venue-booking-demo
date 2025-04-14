@@ -11,7 +11,7 @@ const sampleEventItem = {
   start: '09:00',
   end: '10:30',
   type: 'meeting',
-  organizedBy: 'Professor Smith',
+  organizer: 'Professor Smith',
   description: 'This is a sample event description. Please be sure to notify us of your attendance!',
   participantsMandatory: [
     { name: 'Alice Johnson', status: 'Confirmed' },
@@ -52,9 +52,12 @@ export const useBookingStore = defineStore('booking', {
       axios.get('/api/reservations').then((response) => {
         if (response.status === 200) {
           response.data.reservations.forEach((reservation: any) => {
-            this.addEvent(new Date(reservation.start_datetime), {
+            reservation.is_visible && this.addEvent(new Date(reservation.start_datetime), {
               ...sampleEventItem,
-              title: this.reservationTypes[reservation.type_id],
+              title: reservation.title,
+              description: reservation.description || '',
+              organizer: reservation.organizer,
+              type: this.reservationTypes[reservation.type_id],
               start: formatTime(new Date(reservation.start_datetime)),
               end: formatTime(new Date(reservation.end_datetime)),
             })

@@ -43,7 +43,7 @@ function getTypeColor(type: string): string {
           </div>
           <div class="mb-4">
             <span class="block text-sm font-medium">Organized by:</span>
-            <span class="text-sm">{{ props.event.organizedBy }}</span>
+            <span class="text-sm">{{ props.event.organizer }}</span>
           </div>
           <div class="mb-4">
             <span class="block text-sm font-medium">Time:</span>

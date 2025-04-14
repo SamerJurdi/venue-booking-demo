@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
 
 const sampleEventItem = {
-  organizedBy: 'Professor Smith',
+  organizer: 'Professor Smith',
   participantsMandatory: [
     { name: 'Alice Johnson', status: 'Confirmed' },
     { name: 'Bob Williams', status: 'Pending' },
