@@ -19,7 +19,7 @@ async function queryBookedReservations(startDate: string, endDate: string) {
 
 async function deleteUserReservation(userId: string, reservationId: string) {
   console.log({userId, reservationId})
-  const sql = 'DELETE FROM "Reservation" WHERE organizer_id = $1 AND id =  $2 RETURNING *'
+  const sql = 'DELETE FROM "Reservation" WHERE organizer_id = $1 AND id =  $2 RETURNING id'
   return await queryDatabase(sql, [userId, reservationId])
 }
 
@@ -32,7 +32,7 @@ async function insertReservation(
   organizerId: string,
   venueId: string
 ) {
-  const sql = 'INSERT INTO "Reservation" (start_datetime, end_datetime, title, description, type_id, organizer_id, venue_id) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+  const sql = 'INSERT INTO "Reservation" (start_datetime, end_datetime, title, description, type_id, organizer_id, venue_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id';
   return await queryDatabase(sql, [startDate, endDate, title, description, typeId, organizerId, venueId]);
 }
 
@@ -116,8 +116,8 @@ async function createReservation(req: Request, res: Response) {
       res.status(409).json({ message: 'Reservation conflict' });
       return;
     } else {
-      await insertReservation(startDate, endDate, title, description, typeId, getSessionUserId(req), venueId);
-      res.status(201).json({ message: 'Reservation created successfully!' });
+      const reservation = await insertReservation(startDate, endDate, title, description, typeId, getSessionUserId(req), venueId);
+      res.status(201).json({ message: 'Reservation created successfully!',  reservationId: reservation[0].id});
     }
   } catch (error) {
     console.error('Failed to create reservation:', error);
