@@ -28,28 +28,28 @@ export const useBookingStore = defineStore('booking', {
       this.events[key].push(event)
     },
     async updateEvents() {
-      axios.get('/api/reservations').then(response => {
+      axios.get('/api/reservations').then((response) => {
         if (response.status === 200) {
           response.data.reservations.forEach((reservation: any) => {
             this.addEvent(new Date(reservation.start_datetime), {
               title: this.reservationTypes[reservation.type_id],
               start: formatTime(new Date(reservation.start_datetime)),
-              end: formatTime(new Date(reservation.end_datetime))
+              end: formatTime(new Date(reservation.end_datetime)),
             })
           })
         }
       })
     },
     async getReservationTypes() {
-      axios.get('/api/reservations/types').then(response => {
+      axios.get('/api/reservations/types').then((response) => {
         if (response.status === 200) {
           response.data.reservationTypes.forEach((reservationType: any) => {
-            let key = reservationType.id;
-            let value = reservationType.name;
+            const key = reservationType.id
+            const value = reservationType.name
             this.reservationTypes[key] = value
           })
         }
       })
-    }
+    },
   },
 })

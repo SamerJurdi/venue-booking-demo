@@ -37,8 +37,8 @@ function changeMonth(delta: number) {
 }
 
 function updateMonthYear(newMonth: number, newYear: number) {
-  const newDate = new Date();
-  newDate.setDate(1);
+  const newDate = new Date()
+  newDate.setDate(1)
   newDate.setMonth(newMonth)
   newDate.setFullYear(newYear)
   selectedDate.value = newDate

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
 
 const props = defineProps<{
-  date: Date,
+  date: Date
   types: Record<string, string>
 }>()
 const emit = defineEmits<{
@@ -33,22 +33,12 @@ const submitEvent = () => {
 <template>
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
     <div class="bg-white p-6 rounded shadow-lg w-80">
-      <h2 class="text-lg font-bold mb-4">
-        New Event on {{ props.date.toDateString() }}
-      </h2>
+      <h2 class="text-lg font-bold mb-4">New Event on {{ props.date.toDateString() }}</h2>
       <div class="mb-2">
         <label for="eventType" class="block mb-1 font-medium">Type</label>
-        <select
-          id="eventType"
-          v-model="title"
-          class="w-full px-2 py-1 border rounded"
-        >
+        <select id="eventType" v-model="title" class="w-full px-2 py-1 border rounded">
           <option value="" disabled>Select booking type</option>
-          <option
-            v-for="(display, key) in props.types"
-            :key="key"
-            :value="key"
-          >
+          <option v-for="(display, key) in props.types" :key="key" :value="key">
             {{ display }}
           </option>
         </select>
