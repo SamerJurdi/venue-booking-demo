@@ -89,7 +89,7 @@ async function createReservation(req: Request, res: Response) {
     const isReserved = (await queryBookedReservations(startDate, endDate)).length > 0;
 
     if (isReserved) {
-      res.status(409).json({ mesage: 'Reservation conflict' })
+      res.status(409).json({ message: 'Reservation conflict' })
       return;
     } else {
       await insertReservation(startDate, endDate, typeId, getSessionUserId(req), venueId);
