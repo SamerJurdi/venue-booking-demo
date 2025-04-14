@@ -36,7 +36,7 @@ async function getReservations(req: Request, res: Response) {
     } catch (error) {
       console.error('Error fetching reservations:', error);
       res.status(500).json({
-        error: 'Internal server error while retrieving reservations',
+        message: 'Internal server error while retrieving reservations',
       });
     }
     return;
@@ -47,7 +47,7 @@ async function getReservations(req: Request, res: Response) {
 
   if (isNaN(start.getTime()) || isNaN(end.getTime())) {
     res.status(400).json({
-      error: 'Invalid date format. Expected format: YYYY-MM-DD',
+      message: 'Invalid date format. Expected format: YYYY-MM-DD',
     });
     return;
   }
@@ -61,7 +61,7 @@ async function getReservations(req: Request, res: Response) {
   } catch (error) {
     console.error('Error fetching reservations:', error);
     res.status(500).json({
-      error: 'Internal server error while retrieving reservations',
+      message: 'Internal server error while retrieving reservations',
     });
   }
 }

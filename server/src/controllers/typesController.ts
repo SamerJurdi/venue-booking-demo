@@ -13,7 +13,7 @@ async function getReservationTypes(req: Request, res: Response) {
   } catch (error) {
     console.error('Error fetching reservation types:', error);
     res.status(500).json({
-      error: 'Internal server error while retrieving reservation types',
+      message: 'Internal server error while retrieving reservation types',
     });
   }
 }
