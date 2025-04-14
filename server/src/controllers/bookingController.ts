@@ -17,6 +17,12 @@ async function queryBookedReservations(startDate: string, endDate: string) {
   return await queryDatabase(sql, [startDate, endDate]);
 }
 
+async function deleteUserReservation(userId: string, reservationId: string) {
+  console.log({userId, reservationId})
+  const sql = 'DELETE FROM "Reservation" WHERE organizer_id = $1 AND id =  $2 RETURNING *'
+  return await queryDatabase(sql, [userId, reservationId])
+}
+
 async function insertReservation(
   startDate: string,
   endDate: string,
@@ -107,7 +113,7 @@ async function createReservation(req: Request, res: Response) {
     const isReserved = (await queryBookedReservations(startDate, endDate)).length > 0;
 
     if (isReserved) {
-      res.status(409).json({ message: 'Reservation conflict' })
+      res.status(409).json({ message: 'Reservation conflict' });
       return;
     } else {
       await insertReservation(startDate, endDate, title, description, typeId, getSessionUserId(req), venueId);
@@ -119,4 +125,16 @@ async function createReservation(req: Request, res: Response) {
   }
 }
 
-export {getReservations, createReservation}
+async function deleteReservation(req: Request, res: Response) {
+  const reservationId = req.params.reservationId;
+  try {
+    const deleted = await deleteUserReservation(getSessionUserId(req), reservationId);
+    if (deleted.length === 1) {
+      res.status(200).json({ message: 'Your reservation has been deleted' });
+    } else res.status(404).json({ message: 'Reservation not found' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+export {getReservations, createReservation, deleteReservation}
