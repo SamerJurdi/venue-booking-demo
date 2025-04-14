@@ -3,12 +3,12 @@ import { queryDatabase } from '../config/db.js';
 import { getSessionUserId } from '../middleware/sessionManger.js';
 
 async function queryAllReservations() {
-  const sql = 'SELECT * FROM "Reservation"';
+  const sql = 'SELECT * FROM "ReservationAndOrganizer"';
   return await queryDatabase(sql);
 }
 
 async function queryReservations(startDate: string, endDate: string) {
-  const sql = 'SELECT * FROM "Reservation" WHERE start_datetime >= $1 AND start_datetime <= $2';
+  const sql = 'SELECT * FROM "ReservationAndOrganizer" WHERE start_datetime >= $1 AND start_datetime <= $2';
   return await queryDatabase(sql, [startDate, endDate]);
 }
 
@@ -17,9 +17,17 @@ async function queryBookedReservations(startDate: string, endDate: string) {
   return await queryDatabase(sql, [startDate, endDate]);
 }
 
-async function insertReservation(startDate: string, endDate: string, typeId: string, organizerId: string, venueId: string) {
-  const sql = 'INSERT INTO "Reservation" (start_datetime, end_datetime, type_id, organizer_id, venue_id) VALUES ($1, $2, $3, $4, $5)';
-  return await queryDatabase(sql, [startDate, endDate, typeId, organizerId, venueId]);
+async function insertReservation(
+  startDate: string,
+  endDate: string,
+  title: string,
+  description: string,
+  typeId: string,
+  organizerId: string,
+  venueId: string
+) {
+  const sql = 'INSERT INTO "Reservation" (start_datetime, end_datetime, title, description, type_id, organizer_id, venue_id) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+  return await queryDatabase(sql, [startDate, endDate, title, description, typeId, organizerId, venueId]);
 }
 
 async function getReservations(req: Request, res: Response) {
@@ -66,9 +74,9 @@ async function getReservations(req: Request, res: Response) {
   }
 }
 async function createReservation(req: Request, res: Response) {
-  const { startDate, endDate, typeId, venueId } = req.body;
+  const { startDate, endDate, title, description, typeId, venueId } = req.body;
 
-  if (!startDate || !endDate || !typeId || !venueId) {
+  if (!startDate || !endDate || !title || !typeId || !venueId) {
     res.status(400).json({ message: 'Missing required fields' });
     return;
   }
@@ -85,6 +93,16 @@ async function createReservation(req: Request, res: Response) {
     return;
   }
 
+  const today = new Date();
+  const offsetInMinutes = today.getTimezoneOffset();
+  const offsetInHours = -offsetInMinutes / 60;
+  today.setHours(offsetInHours, 0, 0, 0);
+
+  if (start < today) {
+    res.status(400).json({ message: 'Start date cannot be in the past' });
+    return;
+  }
+
   try {
     const isReserved = (await queryBookedReservations(startDate, endDate)).length > 0;
 
@@ -92,7 +110,7 @@ async function createReservation(req: Request, res: Response) {
       res.status(409).json({ message: 'Reservation conflict' })
       return;
     } else {
-      await insertReservation(startDate, endDate, typeId, getSessionUserId(req), venueId);
+      await insertReservation(startDate, endDate, title, description, typeId, getSessionUserId(req), venueId);
       res.status(201).json({ message: 'Reservation created successfully!' });
     }
   } catch (error) {
