@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
+import { defineEmits } from 'vue';
 import type { EventItem } from '@/common/CustomTypes'
 import { getTypeBgColor200 } from '@/common/Functions'
 import { ParticipantCard } from '@/components';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref } from 'vue'
 
 interface LoginFunction {
   (username: string, password: string): Promise<void>
