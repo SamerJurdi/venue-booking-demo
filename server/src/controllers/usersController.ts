@@ -28,7 +28,12 @@ async function loginUser(req: Request, res: Response) {
       return;
     }
 
-    activateSession(req, user.id)
+    activateSession(req, {
+      id: user.id,
+      title: user.prefix,
+      firstName: user.first_name,
+      lastName: user.last_name
+    })
     res.status(200).json({message: 'Login successful, session started.'});
   } catch (error) {
     console.error('Error during login:', error);

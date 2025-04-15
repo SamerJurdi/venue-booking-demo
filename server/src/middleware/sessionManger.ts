@@ -17,7 +17,7 @@ function activateSession(req: Request, user: {id: string, title: string, firstNa
 
 function deactivateSession(req: Request) {
   req.session.customId = null;
-  req.session.userId = null;
+  req.session.user = null;
 
   req.session.save(function (err) {
     if (err) return next(err)
