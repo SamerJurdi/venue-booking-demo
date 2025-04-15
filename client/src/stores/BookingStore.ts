@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import type { EventItem } from '@/common/CustomTypes'
 import { formatDate, formatTime } from '@/common/Functions'
+import { useUserStore } from './UserStore'
 
 const toast = useToast()
 
@@ -90,7 +91,9 @@ export const useBookingStore = defineStore('booking', {
 
       axios.post(`/api/reservations/create`, body).then(response => {
         if (response.status === 201) {
-          this.addEvent(date, {...event, reservationId: response.data.reservationId})
+          const userStore = useUserStore()
+          const organizer = {key: userStore.userId, value: ((userStore.title + ' ') ||  '') + userStore.firstName + ' ' + userStore.lastName}
+          this.addEvent(date, {...event, reservationId: response.data.reservationId, organizer})
           toast.success(response.data.message)
         } else {
           toast.error(response.data.message || 'Something went wrong!')
