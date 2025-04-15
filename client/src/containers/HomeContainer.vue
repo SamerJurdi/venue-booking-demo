@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useBookingStore, useUserStore } from '@/stores/BookingStore'
+import { useUserStore } from '@/stores/UserStore'
+import { useBookingStore } from '@/stores/BookingStore'
 import { CalendarHeader, CalendarGrid, NewEventPopup, RoomSelectionPopup } from '@/components'
 import type { EventItem } from '@/common/CustomTypes'
 
 const { selectedRoom, selectedDate, newEventDate, events, reservationTypes } = storeToRefs(useBookingStore())
-const { userId } = storeToRefs(useUserStore())
+const { userId, title, firstName } = storeToRefs(useUserStore())
 
 function getWeekForDate(date: Date): Date[] {
   const start = new Date(date)
@@ -51,6 +52,10 @@ function closeNewEventPopup() {
   showNewEventPopup.value = false
 }
 
+function buildUserName() {
+  return (title.value && (title.value + ' ' + firstName.value)) || firstName.value || ''
+}
+
 onMounted(async () => {
   await useUserStore().setActiveUser()
   if (userId.value) {
@@ -61,7 +66,7 @@ onMounted(async () => {
 
 <template>
   <div class="h-screen p-4">
-    <RoomSelectionPopup :userName="'Professor X'" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="" />
+    <RoomSelectionPopup :userName="buildUserName()" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="" />
 
     <transition
       enter-active-class="transition-opacity duration-3000" 

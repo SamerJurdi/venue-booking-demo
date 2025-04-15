@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { useToast, POSITION } from 'vue-toastification'
-import { useRouter } from 'vue-router'
+import router from '@/router'
 
 const toast = useToast()
 
@@ -19,7 +19,7 @@ const getInitialState = (): {
   }
 }
 
-export const useUserStore = defineStore('booking', {
+export const useUserStore = defineStore('user', {
   state: getInitialState,
   actions: {
     setUser(user: {id: string, title?: string, firstName: string, lastName: string}) {
@@ -28,9 +28,13 @@ export const useUserStore = defineStore('booking', {
       this.firstName = user.firstName
       this.lastName = user.lastName
     },
+    resetUser() {
+      this.userId = undefined
+      this.title = undefined
+      this.firstName = undefined
+      this.lastName = undefined
+    },
     async login(username: string, password: string): Promise<void> {
-      const router = useRouter()
-
       if (username.trim() === '' || password.trim() === '') {
         toast.error('Invalid username or password', { position: POSITION.TOP_CENTER })
       } else {
@@ -39,33 +43,34 @@ export const useUserStore = defineStore('booking', {
             username,
             password,
           })
-          .then(function (response) {
+          .then((response) => {
             if (response.status === 200) {
               router.push({ name: 'home' })
             } else {
               toast.error(response.data.message, { position: POSITION.TOP_CENTER })
             }
           })
-          .catch(function (error) {
-            toast.error(error.response.data.message, { position: POSITION.TOP_CENTER })
+          .catch((error) => {
+            toast.error(error.response.data?.message, { position: POSITION.TOP_CENTER })
           })
       }
     },
     async setActiveUser() {
-      const router = useRouter()
-      const setUser = this.setUser
-
       await axios
         .get('/api/auth/user')
-        .then(function (response) {
+        .then((response) => {
           if (response.status !== 200) {
             toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
+            this.resetUser()
             router.push({ name: 'login' })
           } else {
-            setUser(response.data)}
+            this.setUser(response.data.user)
+            router.push({ name: 'home' })
+          }
         })
-        .catch(function () {
+        .catch(() => {
           toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
+          this.resetUser()
           router.push({ name: 'login' })
         })
     }
