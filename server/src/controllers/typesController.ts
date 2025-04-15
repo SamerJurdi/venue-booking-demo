@@ -23,11 +23,11 @@ async function getVenueTypes(req: Request, res: Response) {
     const venueTypes = await queryReservationTypes('venueTypes');
     res.status(200).json({venueTypes})
   } catch (error) {
-    console.error('Error fetching reservation types:', error);
+    console.error('Error fetching venue types:', error);
     res.status(500).json({
-      message: 'Internal server error while retrieving reservation types',
+      message: 'Internal server error while retrieving venue types',
     });
   }
 }
 
-export {getReservationTypes}
+export {getReservationTypes, getVenueTypes}
