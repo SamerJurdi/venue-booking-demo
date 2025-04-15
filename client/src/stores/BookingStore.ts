@@ -19,18 +19,20 @@ const sampleEventItem = {
 }
 
 const getInitialState = (): {
-  selectedRoom: {key: string, value: string} | undefined
+  selectedRoom: {key?: string, value?: string}
   selectedDate: Date
   newEventDate: Date
   events: Record<string, EventItem[]>
   reservationTypes: {key: string, value: string}[]
+  venues: {key: string, value: string}[]
 } => {
   return {
-    selectedRoom: undefined,
+    selectedRoom: {},
     selectedDate: new Date(),
     newEventDate: new Date(),
     events: {},
     reservationTypes: [],
+    venues: [],
   }
 }
 
@@ -50,7 +52,7 @@ export const useBookingStore = defineStore('booking', {
     },
     async updateReservations() {
       this.events = getInitialState().events
-      axios.get('/api/reservations').then((response) => {
+      axios.get('/api/reservations/venue/' + this.selectedRoom.key).then((response) => {
         if (response.status === 200) {
           response.data.reservations.forEach((reservation: any) => {
             reservation.is_visible && this.addEvent(new Date(reservation.start_datetime), {
@@ -117,6 +119,14 @@ export const useBookingStore = defineStore('booking', {
         toast.error(error.response.data.message || 'Something went wrong!')
         this.updateReservations()
       })
-    }
+    },
+    async getVenues() {
+      this.venues = getInitialState().venues
+      axios.get('/api/reservations/venues').then((response) => {
+        if (response.status === 200) {
+          this.venues = response.data.venues
+        } else toast.error(response.data.message || 'Something went wrong!')
+      }).catch(error => toast.error(error.response.data.message || 'Something went wrong!'))
+    },
   },
 })

@@ -6,7 +6,7 @@ import { useBookingStore } from '@/stores/BookingStore'
 import { CalendarHeader, CalendarGrid, NewEventPopup, RoomSelectionPopup } from '@/components'
 import type { EventItem } from '@/common/CustomTypes'
 
-const { selectedRoom, selectedDate, newEventDate, events, reservationTypes } = storeToRefs(useBookingStore())
+const { selectedRoom, selectedDate, newEventDate, events, reservationTypes, venues } = storeToRefs(useBookingStore())
 const { userId, title, firstName } = storeToRefs(useUserStore())
 
 function getWeekForDate(date: Date): Date[] {
@@ -60,13 +60,14 @@ onMounted(async () => {
   await useUserStore().setActiveUser()
   if (userId.value) {
     await useBookingStore().getReservationTypes()
+    await useBookingStore().getVenues()
   }
 })
 </script>
 
 <template>
   <div class="h-screen p-4">
-    <RoomSelectionPopup :userName="buildUserName()" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="" />
+    <RoomSelectionPopup :userName="buildUserName()" :rooms="venues" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="" />
 
     <transition
       enter-active-class="transition-opacity duration-3000" 
