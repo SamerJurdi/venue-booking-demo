@@ -16,23 +16,25 @@ const isRoomSelected = ref(false)
 
 function onRoomChange(event: Event) {
   const target = event.target as HTMLSelectElement;
+  const selectedRoom = JSON.parse(target.value)
   isRoomSelected.value = true
-  emit('updateSelectedRoom', {key: target.value.key, value: target.value.key})
+
+  emit('updateSelectedRoom', {key: selectedRoom.key, value: selectedRoom.value})
 }
 
 </script>
 
 <template>
   <transition 
-    mode="out-in"
-    enter-active-class="transition duration-300 ease-out"
+  mode="out-in"
+    enter-active-class="transition duration-500 ease-out"
     enter-from-class="transform scale-95"
     enter-to-class="transform scale-100"
-    leave-active-class="transition duration-300 ease-in"
+  leave-active-class="transition duration-300 ease-in"
     leave-from-class="transform scale-100"
     leave-to-class="transform scale-95"
   >
-    <div v-if="!isRoomSelected" class="fixed inset-0 flex items-center justify-center z-50">
+    <div v-if="!isRoomSelected" class="bg-black/10 fixed inset-0 flex items-center justify-center z-50">
       <div class="bg-white p-6 rounded-2xl w-3/5">
         <div class="flex justify-between items-center mb-4">
           <span class="text-xl font-bold">Welcome {{ props.userName }}</span>
@@ -44,7 +46,7 @@ function onRoomChange(event: Event) {
           <label for="roomSelect" class="mb-2 font-medium">Select a Room:</label>
           <select @change="onRoomChange" class="border rounded px-2 py-1">
             <option value="" disabled selected>-- Select Room --</option>
-            <option v-for="room in props.rooms" :key="room.key" :value="room">
+            <option v-for="room in props.rooms" :key="room.key" :value="JSON.stringify(room)">
               {{ room.value }}
             </option>
           </select>
@@ -58,7 +60,7 @@ function onRoomChange(event: Event) {
         <span class="ml-4 text-gray-600">
           Room:
           <select @change="onRoomChange" class="border rounded px-2 py-1 ml-2">
-            <option v-for="room in props.rooms" :key="room.key" :value="room">
+            <option v-for="room in props.rooms" :key="room.key" :value="JSON.stringify(room)">
               {{ room.value }}
             </option>
           </select>

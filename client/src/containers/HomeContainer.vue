@@ -85,27 +85,41 @@ onMounted(async () => {
     useBookingStore().updateReservations()
   }
 })
+
+const selectedRoom = ref()
+function updateSelectedRoom(room: {key: string, value: string}) {
+  selectedRoom.value = room
+}
+
 </script>
 
 <template>
   <div class="h-screen p-4">
-    <RoomSelectionPopup :userName="'Professor X'" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="" @logout="" />
+    <RoomSelectionPopup :userName="'Professor X'" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="updateSelectedRoom" @logout="" />
 
-    <CalendarHeader
-      :selectedDate="selectedDate"
-      @changeMonth="changeMonth"
-      @updateMonthYear="updateMonthYear"
-    />
+    <transition
+      enter-active-class="transition-opacity duration-3000" 
+      enter-from-class="opacity-0" 
+      enter-to-class="opacity-100"
+    >
+      <div v-if="selectedRoom">
+        <CalendarHeader
+          :selectedDate="selectedDate"
+          @changeMonth="changeMonth"
+          @updateMonthYear="updateMonthYear"
+        />
 
-    <CalendarGrid
-      :selectedDate="selectedDate"
-      :selectedWeek="selectedWeek"
-      :events="events"
-      :checkOwner="(ownerId: string): boolean => ownerId === userId"
-      @selectDay="selectDay"
-      @openNewEvent="openNewEvent"
-      @deleteEvent="(event: EventItem) => event.reservationId && useBookingStore().deleteReservation(event.reservationId)"
-    />
+        <CalendarGrid
+          :selectedDate="selectedDate"
+          :selectedWeek="selectedWeek"
+          :events="events"
+          :checkOwner="(ownerId: string): boolean => ownerId === userId"
+          @selectDay="selectDay"
+          @openNewEvent="openNewEvent"
+          @deleteEvent="(event: EventItem) => event.reservationId && useBookingStore().deleteReservation(event.reservationId)"
+        />
+      </div>
+    </transition>
 
     <NewEventPopup
       v-if="showNewEventPopup"
