@@ -1,4 +1,5 @@
 interface EventItem {
+  reservationId?: string,
   title: string;
   type: {key?: string, value?: string};
   organizer: {key?: string, value?: string};

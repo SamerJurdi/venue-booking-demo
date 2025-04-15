@@ -104,6 +104,9 @@ function openEventDetail(event: EventItem) {
       :event="selectedEventDetail"
       :showDeleteButton="checkOwner(selectedEventDetail.organizer.key)"
       @close="showEventPopup = false"
-      @deleteEvent="(event: EventItem) => $emit('deleteEvent', event)"
+      @deleteEvent="(event: EventItem) => {
+        $emit('deleteEvent', event)
+        showEventPopup = false
+      }"
     />
 </template>

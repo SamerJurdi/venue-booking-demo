@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
 
 const sampleEventItem = {
-  organizer: {},
   participantsMandatory: [
     { name: 'Alice Johnson', status: 'Confirmed' },
     { name: 'Bob Williams', status: 'Pending' },
@@ -17,6 +16,7 @@ const sampleEventItem = {
 const props = defineProps<{
   date: Date
   types: {key: string, value: string}[]
+  organizer: {key?: string, value?: string}
 }>()
 const emit = defineEmits<{
   (e: 'addEvent', date: Date, event: EventItem): void
@@ -38,6 +38,7 @@ const submitEvent = () => {
     description: description.value,
     start: startTime.value,
     end: endTime.value,
+    organizer: props.organizer,
   })
 
   title.value = ''

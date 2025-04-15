@@ -41,13 +41,14 @@ export const useBookingStore = defineStore('booking', {
       }
       this.events[key].push(event)
     },
-    async updateEvents() {
+    async updateReservations() {
       this.events = getInitialState().events
       axios.get('/api/reservations').then((response) => {
         if (response.status === 200) {
           response.data.reservations.forEach((reservation: any) => {
             reservation.is_visible && this.addEvent(new Date(reservation.start_datetime), {
               ...sampleEventItem,
+              reservationId: reservation.id,
               title: reservation.title,
               description: reservation.description || '',
               organizer: {key: reservation.organizer_id, value: reservation.organizer},
@@ -83,31 +84,30 @@ export const useBookingStore = defineStore('booking', {
 
       axios.post(`/api/reservations/create`, body).then(response => {
         if (response.status === 201) {
-          this.addEvent(date, event)
+          this.addEvent(date, {...event, reservationId: response.data.reservationId})
           toast.success(response.data.message)
         } else {
           toast.error(response.data.message || 'Something went wrong!')
-          this.updateEvents()
+          this.updateReservations()
         }
       }).catch(error => {
         toast.error(error.response.data.message || 'Something went wrong!')
-        this.updateEvents()
+        this.updateReservations()
       })
     },
     async deleteReservation(reservationId: string) {
-      toast.success('Reservation Deleted!')
-      // axios.delete(`/api/reservations/delete/` + reservationId).then(response => {
-      //   if (response.status === 201) {
-      //     this.updateEvents()
-      //     toast.success(response.data.message)
-      //   } else {
-      //     toast.error(response.data.message || 'Something went wrong!')
-      //     this.updateEvents()
-      //   }
-      // }).catch(error => {
-      //   toast.error(error.response.data.message || 'Something went wrong!')
-      //   this.updateEvents()
-      // })
+      axios.delete(`/api/reservations/delete/` + reservationId).then(response => {
+        if (response.status === 201) {
+          this.updateReservations()
+          toast.success(response.data.message)
+        } else {
+          toast.error(response.data.message || 'Something went wrong!')
+          this.updateReservations()
+        }
+      }).catch(error => {
+        toast.error(error.response.data.message || 'Something went wrong!')
+        this.updateReservations()
+      })
     }
   },
 })

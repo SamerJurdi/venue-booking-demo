@@ -5,6 +5,7 @@ import axios from 'axios'
 import { POSITION, useToast } from 'vue-toastification'
 import { useBookingStore } from '@/stores/BookingStore'
 import { CalendarHeader, CalendarGrid, NewEventPopup } from '@/components'
+import type { EventItem } from '@/common/CustomTypes'
 
 const props = defineProps({
   onSignIn: {
@@ -15,7 +16,7 @@ const props = defineProps({
 
 const { selectedDate, newEventDate, events, reservationTypes } = storeToRefs(useBookingStore())
 
-const userId = ref(null)
+const userId = ref(undefined)
 const toast = useToast()
 
 function getWeekForDate(date: Date): Date[] {
@@ -81,7 +82,7 @@ onMounted(async () => {
   await setActiveUser()
   if (userId.value) {
     await useBookingStore().getReservationTypes()
-    useBookingStore().updateEvents()
+    useBookingStore().updateReservations()
   }
 })
 </script>
@@ -101,13 +102,14 @@ onMounted(async () => {
       :checkOwner="(ownerId: string): boolean => ownerId === userId"
       @selectDay="selectDay"
       @openNewEvent="openNewEvent"
-      @deleteEvent="useBookingStore()."
+      @deleteEvent="(event: EventItem) => event.reservationId && useBookingStore().deleteReservation(event.reservationId)"
     />
 
     <NewEventPopup
       v-if="showNewEventPopup"
       :date="newEventDate"
       :types="reservationTypes"
+      :organizer="{key: userId}"
       @addEvent="useBookingStore().bookReservation"
       @close="closeNewEventPopup"
     />
