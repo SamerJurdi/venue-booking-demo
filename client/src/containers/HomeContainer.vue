@@ -1,23 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import axios from 'axios'
-import { POSITION, useToast } from 'vue-toastification'
-import { useBookingStore } from '@/stores/BookingStore'
+import { useBookingStore, useUserStore } from '@/stores/BookingStore'
 import { CalendarHeader, CalendarGrid, NewEventPopup, RoomSelectionPopup } from '@/components'
 import type { EventItem } from '@/common/CustomTypes'
 
-const props = defineProps({
-  onSignIn: {
-    type: Function,
-    required: true,
-  },
-})
-
 const { selectedRoom, selectedDate, newEventDate, events, reservationTypes } = storeToRefs(useBookingStore())
-
-const userId = ref(undefined)
-const toast = useToast()
+const { userId } = storeToRefs(useUserStore())
 
 function getWeekForDate(date: Date): Date[] {
   const start = new Date(date)
@@ -62,24 +51,8 @@ function closeNewEventPopup() {
   showNewEventPopup.value = false
 }
 
-async function setActiveUser() {
-  await axios
-    .get('/api/auth/user')
-    .then(function (response) {
-      if (response.status !== 200) {
-        toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
-        props.onSignIn()
-      } else {
-        userId.value = response.data.userId}
-    })
-    .catch(function () {
-      toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
-      props.onSignIn()
-    })
-}
-
 onMounted(async () => {
-  await setActiveUser()
+  await useUserStore().setActiveUser()
   if (userId.value) {
     await useBookingStore().getReservationTypes()
   }
