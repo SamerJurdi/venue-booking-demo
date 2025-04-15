@@ -18,7 +18,6 @@ async function queryBookedReservations(startDate: string, endDate: string) {
 }
 
 async function deleteUserReservation(userId: string, reservationId: string) {
-  console.log({userId, reservationId})
   const sql = 'DELETE FROM "Reservation" WHERE organizer_id = $1 AND id =  $2 RETURNING id'
   return await queryDatabase(sql, [userId, reservationId])
 }
@@ -98,13 +97,12 @@ async function createReservation(req: Request, res: Response) {
     res.status(400).json({ message: 'Start date must be before end date' });
     return;
   }
+  let now = new Date();
+  const offsetInMinutes = now.getTimezoneOffset();
+  const offsetInMs = offsetInMinutes * 60 * 1000;
+  now = new Date(now.getTime() - offsetInMs);
 
-  const today = new Date();
-  const offsetInMinutes = today.getTimezoneOffset();
-  const offsetInHours = -offsetInMinutes / 60;
-  today.setHours(offsetInHours, 0, 0, 0);
-
-  if (start < today) {
+  if (start < now) {
     res.status(400).json({ message: 'Start date cannot be in the past' });
     return;
   }
