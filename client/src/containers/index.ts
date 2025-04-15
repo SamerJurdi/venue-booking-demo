@@ -1,4 +1,4 @@
 import LoginContainer from './LoginContainer.vue'
-import CalendarContainer from './CalendarContainer.vue'
+import HomeContainer from './HomeContainer.vue'
 
-export { LoginContainer, CalendarContainer }
+export { LoginContainer, HomeContainer }

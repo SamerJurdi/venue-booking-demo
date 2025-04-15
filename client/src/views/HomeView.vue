@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { CalendarContainer } from '@/containers'
+import { HomeContainer } from '@/containers'
 
 const router = useRouter()
 
@@ -10,5 +10,5 @@ const onSignIn = () => {
 </script>
 
 <template>
-  <CalendarContainer :onSignIn="onSignIn" />
+  <HomeContainer :onSignIn="onSignIn" />
 </template>
