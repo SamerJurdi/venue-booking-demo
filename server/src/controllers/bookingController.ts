@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { queryDatabase } from '../config/db.js';
-import { getSessionUserId } from '../middleware/sessionManger.js';
+import { getSessionUser } from '../middleware/sessionManger.js';
 
 async function queryAllReservations() {
   const sql = 'SELECT * FROM "ReservationAndOrganizer"';
@@ -114,7 +114,7 @@ async function createReservation(req: Request, res: Response) {
       res.status(409).json({ message: 'Reservation conflict' });
       return;
     } else {
-      const reservation = await insertReservation(startDate, endDate, title, description, typeId, getSessionUserId(req), venueId);
+      const reservation = await insertReservation(startDate, endDate, title, description, typeId, getSessionUser(req).id, venueId);
       res.status(201).json({ message: 'Reservation created successfully!',  reservationId: reservation[0].id});
     }
   } catch (error) {
@@ -126,7 +126,7 @@ async function createReservation(req: Request, res: Response) {
 async function deleteReservation(req: Request, res: Response) {
   const reservationId = req.params.reservationId;
   try {
-    const deleted = await deleteUserReservation(getSessionUserId(req), reservationId);
+    const deleted = await deleteUserReservation(getSessionUser(req).id, reservationId);
     if (deleted.length === 1) {
       res.status(200).json({ message: 'Your reservation has been deleted' });
     } else res.status(404).json({ message: 'Reservation not found' });
