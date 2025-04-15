@@ -42,7 +42,6 @@ async function getReservations(req: Request, res: Response) {
   };
 
   if (!startDate || !endDate) {
-    await queryAllReservations();
     try {
       const reservations = await queryAllReservations();
       res.status(200).json({ reservations });
