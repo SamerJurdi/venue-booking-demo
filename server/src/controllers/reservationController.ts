@@ -18,7 +18,7 @@ async function queryBookedReservations(startDate: string, endDate: string) {
 }
 
 async function deleteUserReservation(userId: string, reservationId: string) {
-  const sql = 'DELETE FROM "Reservation" WHERE organizer_id = $1 AND id =  $2 RETURNING id'
+  const sql = 'DELETE FROM "Reservation" WHERE organizer_id = $1 AND id = $2 RETURNING id'
   return await queryDatabase(sql, [userId, reservationId])
 }
 
