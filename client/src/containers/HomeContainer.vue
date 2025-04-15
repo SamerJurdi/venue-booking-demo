@@ -14,7 +14,7 @@ const props = defineProps({
   },
 })
 
-const { selectedDate, newEventDate, events, reservationTypes } = storeToRefs(useBookingStore())
+const { selectedRoom, selectedDate, newEventDate, events, reservationTypes } = storeToRefs(useBookingStore())
 
 const userId = ref(undefined)
 const toast = useToast()
@@ -82,20 +82,13 @@ onMounted(async () => {
   await setActiveUser()
   if (userId.value) {
     await useBookingStore().getReservationTypes()
-    useBookingStore().updateReservations()
   }
 })
-
-const selectedRoom = ref()
-function updateSelectedRoom(room: {key: string, value: string}) {
-  selectedRoom.value = room
-}
-
 </script>
 
 <template>
   <div class="h-screen p-4">
-    <RoomSelectionPopup :userName="'Professor X'" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="updateSelectedRoom" @logout="" />
+    <RoomSelectionPopup :userName="'Professor X'" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="" />
 
     <transition
       enter-active-class="transition-opacity duration-3000" 

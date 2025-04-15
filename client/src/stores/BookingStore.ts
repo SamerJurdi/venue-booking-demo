@@ -18,12 +18,14 @@ const sampleEventItem = {
 }
 
 const getInitialState = (): {
+  selectedRoom: {key: string, value: string} | undefined
   selectedDate: Date
   newEventDate: Date
   events: Record<string, EventItem[]>
   reservationTypes: {key: string, value: string}[]
 } => {
   return {
+    selectedRoom: undefined,
     selectedDate: new Date(),
     newEventDate: new Date(),
     events: {},
@@ -34,6 +36,10 @@ const getInitialState = (): {
 export const useBookingStore = defineStore('booking', {
   state: getInitialState,
   actions: {
+    updateSelectedRoom(room: {key: string, value: string}) {
+      this.selectedRoom = room
+      this.updateReservations()
+    },
     addEvent(date: Date, event: EventItem) {
       const key = formatDate(date)
       if (!this.events[key]) {
