@@ -7,17 +7,26 @@ const toast = useToast()
 
 const getInitialState = (): {
   userId: string | undefined
+  title: string | undefined
+  firstName: string | undefined
+  lastName: string | undefined
 } => {
   return {
-    userId: undefined
+    userId: undefined,
+    title: undefined,
+    firstName: undefined,
+    lastName: undefined,
   }
 }
 
 export const useUserStore = defineStore('booking', {
   state: getInitialState,
   actions: {
-    setUserId(userId: string) {
-      this.userId = userId
+    setUser(user: {id: string, title?: string, firstName: string, lastName: string}) {
+      this.userId = user.id
+      this.title = user.title || undefined
+      this.firstName = user.firstName
+      this.lastName = user.lastName
     },
     async login(username: string, password: string): Promise<void> {
       const router = useRouter()
@@ -44,7 +53,7 @@ export const useUserStore = defineStore('booking', {
     },
     async setActiveUser() {
       const router = useRouter()
-      const setUserId = this.setUserId
+      const setUser = this.setUser
 
       await axios
         .get('/api/auth/user')
@@ -53,7 +62,7 @@ export const useUserStore = defineStore('booking', {
             toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
             router.push({ name: 'login' })
           } else {
-            setUserId(response.data.userId)}
+            setUser(response.data)}
         })
         .catch(function () {
           toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
