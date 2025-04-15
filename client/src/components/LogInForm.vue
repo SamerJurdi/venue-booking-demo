@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-interface LoginFunction {
-  (username: string, password: string): Promise<void>
-}
-
-const props = defineProps<{
-  login: LoginFunction
+const emit = defineEmits<{
+  (e: 'login', username: string, password: string): void
 }>()
 
 const username = ref('')
 const password = ref('')
 
 const submit = () => {
-  props.login(username.value, password.value)
+  emit('login', username.value, password.value)
 }
 </script>
 
