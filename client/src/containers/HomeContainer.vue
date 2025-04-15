@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import axios from 'axios'
 import { POSITION, useToast } from 'vue-toastification'
 import { useBookingStore } from '@/stores/BookingStore'
-import { CalendarHeader, CalendarGrid, NewEventPopup } from '@/components'
+import { CalendarHeader, CalendarGrid, NewEventPopup, RoomSelectionPopup } from '@/components'
 import type { EventItem } from '@/common/CustomTypes'
 
 const props = defineProps({
@@ -89,6 +89,8 @@ onMounted(async () => {
 
 <template>
   <div class="h-screen p-4">
+    <RoomSelectionPopup :userName="'Professor X'" :rooms="[{key: 'A', value: 'Room A'}, {key: 'B', value: 'Room B'}, {key: 'C', value: 'Room C'}]" :selectedRoom="{}" @updateSelectedRoom="" @logout="" />
+
     <CalendarHeader
       :selectedDate="selectedDate"
       @changeMonth="changeMonth"
