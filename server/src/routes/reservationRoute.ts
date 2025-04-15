@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ensureSessionActive } from '../middleware/sessionManger.js';
-import { createReservation, deleteReservation, getReservations } from '../controllers/bookingController.js';
+import { createReservation, deleteReservation, getReservations } from '../controllers/reservationController.js';
 import { getReservationTypes, getVenueTypes } from '../controllers/typesController.js';
 import { getVenues } from '../controllers/venueController.js'
 
