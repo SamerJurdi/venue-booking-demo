@@ -6,7 +6,8 @@ import { useReservationStore } from '@/stores/ReservationStore'
 import { CalendarHeader, CalendarGrid, NewEventPopup, RoomSelectionPopup } from '@/components'
 import type { EventItem } from '@/common/CustomTypes'
 
-const { selectedRoom, selectedDate, newEventDate, events, reservationTypes, venues } = storeToRefs(useReservationStore())
+const { selectedRoom, selectedDate, newEventDate, events, reservationTypes, venues } =
+  storeToRefs(useReservationStore())
 const { userId, title, firstName } = storeToRefs(useUserStore())
 
 function getWeekForDate(date: Date): Date[] {
@@ -53,7 +54,7 @@ function closeNewEventPopup() {
 }
 
 function buildUserName() {
-  return (title.value && (title.value + ' ' + firstName.value)) || firstName.value || ''
+  return (title.value && title.value + ' ' + firstName.value) || firstName.value || ''
 }
 
 onMounted(async () => {
@@ -67,11 +68,17 @@ onMounted(async () => {
 
 <template>
   <div class="p-4">
-    <RoomSelectionPopup :userName="buildUserName()" :rooms="venues" :selectedRoom="{}" @updateSelectedRoom="useReservationStore().updateSelectedRoom" @logout="useUserStore().logout" />
+    <RoomSelectionPopup
+      :userName="buildUserName()"
+      :rooms="venues"
+      :selectedRoom="{}"
+      @updateSelectedRoom="useReservationStore().updateSelectedRoom"
+      @logout="useUserStore().logout"
+    />
 
     <transition
-      enter-active-class="transition-opacity duration-3000" 
-      enter-from-class="opacity-0" 
+      enter-active-class="transition-opacity duration-3000"
+      enter-from-class="opacity-0"
       enter-to-class="opacity-100"
     >
       <div v-if="selectedRoom.key" class="shadow-2xl px-4 pb-4 mt-2 border-t">
@@ -88,7 +95,10 @@ onMounted(async () => {
           :checkOwner="(ownerId: string): boolean => ownerId === userId"
           @selectDay="selectDay"
           @openNewEvent="openNewEvent"
-          @deleteEvent="(event: EventItem) => event.reservationId && useReservationStore().deleteReservation(event.reservationId)"
+          @deleteEvent="
+            (event: EventItem) =>
+              event.reservationId && useReservationStore().deleteReservation(event.reservationId)
+          "
         />
       </div>
     </transition>
@@ -97,7 +107,7 @@ onMounted(async () => {
       v-if="showNewEventPopup"
       :date="newEventDate"
       :types="reservationTypes"
-      :organizer="{key: userId}"
+      :organizer="{ key: userId }"
       @addEvent="useReservationStore().bookReservation"
       @close="closeNewEventPopup"
     />

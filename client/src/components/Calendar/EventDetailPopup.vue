@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue';
+import { defineEmits } from 'vue'
 import type { EventItem } from '@/common/CustomTypes'
 import { getTypeBgColor200 } from '@/common/Functions'
-import { ParticipantCard } from '@/components';
+import { ParticipantCard } from '@/components'
 
 const props = defineProps<{
-  event: EventItem;
-  showDeleteButton: boolean;
-}>();
+  event: EventItem
+  showDeleteButton: boolean
+}>()
 
 defineEmits<{
-  (e: 'close'): void;
-  (e: 'deleteEvent', event: EventItem): void;
-}>();
+  (e: 'close'): void
+  (e: 'deleteEvent', event: EventItem): void
+}>()
 </script>
 
 <template>
@@ -29,7 +29,9 @@ defineEmits<{
             <h3 class="text-2xl font-bold">{{ props.event.title }}</h3>
             <div class="flex items-center space-x-2">
               <span class="text-sm font-medium">Type:</span>
-              <span :class="['px-2 py-1 rounded', getTypeBgColor200(props.event.type.value), 'text-xs']">
+              <span
+                :class="['px-2 py-1 rounded', getTypeBgColor200(props.event.type.value), 'text-xs']"
+              >
                 {{ props.event.type.value }}
               </span>
             </div>
@@ -44,12 +46,17 @@ defineEmits<{
           </div>
           <div class="mb-4">
             <span class="block text-sm font-medium mb-1">Description:</span>
-            <textarea readonly class="w-full h-32 p-2 border rounded resize-none"
-                      :value="props.event.description"></textarea>
+            <textarea
+              readonly
+              class="w-full h-32 p-2 border rounded resize-none"
+              :value="props.event.description"
+            ></textarea>
           </div>
           <div v-if="showDeleteButton" class="mt-4 flex justify-center">
-            <button @click="$emit('deleteEvent', props.event)"
-                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+            <button
+              @click="$emit('deleteEvent', props.event)"
+              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+            >
               Delete
             </button>
           </div>

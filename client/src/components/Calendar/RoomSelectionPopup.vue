@@ -3,38 +3,40 @@ import { ref, defineEmits } from 'vue'
 
 const props = defineProps<{
   userName: string
-  rooms: {key: string, value: string}[]
-  selectedRoom: {key?: string, value?: string}
+  rooms: { key: string; value: string }[]
+  selectedRoom: { key?: string; value?: string }
 }>()
 
 const emit = defineEmits<{
-  (e: 'updateSelectedRoom', selectedRoom: {key: string, value: string}): void;
-  (e: 'logout'):  void;
-}>();
+  (e: 'updateSelectedRoom', selectedRoom: { key: string; value: string }): void
+  (e: 'logout'): void
+}>()
 
 const isRoomSelected = ref(false)
 
 function onRoomChange(event: Event) {
-  const target = event.target as HTMLSelectElement;
+  const target = event.target as HTMLSelectElement
   const selectedRoom = JSON.parse(target.value)
   isRoomSelected.value = true
 
-  emit('updateSelectedRoom', {key: selectedRoom.key, value: selectedRoom.value})
+  emit('updateSelectedRoom', { key: selectedRoom.key, value: selectedRoom.value })
 }
-
 </script>
 
 <template>
-  <transition 
-  mode="out-in"
+  <transition
+    mode="out-in"
     enter-active-class="transition duration-500 ease-out"
     enter-from-class="transform scale-95"
     enter-to-class="transform scale-100"
-  leave-active-class="transition duration-300 ease-in"
+    leave-active-class="transition duration-300 ease-in"
     leave-from-class="transform scale-100"
     leave-to-class="transform scale-95"
   >
-    <div v-if="!isRoomSelected" class="bg-black/10 fixed inset-0 flex items-center justify-center z-50">
+    <div
+      v-if="!isRoomSelected"
+      class="bg-black/10 fixed inset-0 flex items-center justify-center z-50"
+    >
       <div class="bg-white p-6 rounded-2xl w-3/5">
         <div class="flex justify-between items-center mb-4">
           <span class="text-xl font-bold">Welcome {{ props.userName }}</span>

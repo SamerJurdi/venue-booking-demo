@@ -10,13 +10,13 @@ const sampleEventItem = {
   participantsOptional: [
     { name: 'Charlie Brown', status: 'Invited' },
     { name: 'Diana Prince', status: 'Invited' },
-  ]
+  ],
 }
 
 const props = defineProps<{
   date: Date
-  types: {key: string, value: string}[]
-  organizer: {key?: string, value?: string}
+  types: { key: string; value: string }[]
+  organizer: { key?: string; value?: string }
 }>()
 const emit = defineEmits<{
   (e: 'addEvent', date: Date, event: EventItem): void
@@ -24,7 +24,7 @@ const emit = defineEmits<{
 }>()
 
 const title = ref('')
-const type = ref<{key?: string, value?: string}>({})
+const type = ref<{ key?: string; value?: string }>({})
 const description = ref('')
 const startTime = ref('')
 const endTime = ref('')

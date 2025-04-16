@@ -22,7 +22,7 @@ const getInitialState = (): {
 export const useUserStore = defineStore('user', {
   state: getInitialState,
   actions: {
-    setUser(user: {id: string, title?: string, firstName: string, lastName: string}) {
+    setUser(user: { id: string; title?: string; firstName: string; lastName: string }) {
       this.userId = user.id
       this.title = user.title || undefined
       this.firstName = user.firstName
@@ -60,7 +60,7 @@ export const useUserStore = defineStore('user', {
         .get('/api/auth/user')
         .then((response) => {
           if (response.status !== 200) {
-            toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
+            toast('Please log in to continue', { position: POSITION.TOP_CENTER, timeout: 2000 })
             this.resetUser()
             router.push({ name: 'login' })
           } else {
@@ -69,24 +69,25 @@ export const useUserStore = defineStore('user', {
           }
         })
         .catch(() => {
-          toast('Please log in to continue', {position: POSITION.TOP_CENTER, timeout: 2000})
+          toast('Please log in to continue', { position: POSITION.TOP_CENTER, timeout: 2000 })
           this.resetUser()
           router.push({ name: 'login' })
         })
     },
     async logout() {
-      await axios.get('/api/auth/logout')
-      .then((response) => {
-        if (response.status !== 204) {
-          toast.error('Something went wrong!', {position: POSITION.TOP_CENTER, timeout: 2000})
-        } else {
-          this.resetUser()
-          router.push({ name: 'login' })
-        }
-      })
-      .catch(() => {
-        toast.error('Something went wrong!', {position: POSITION.TOP_CENTER, timeout: 2000})
-      })
-    }
+      await axios
+        .get('/api/auth/logout')
+        .then((response) => {
+          if (response.status !== 204) {
+            toast.error('Something went wrong!', { position: POSITION.TOP_CENTER, timeout: 2000 })
+          } else {
+            this.resetUser()
+            router.push({ name: 'login' })
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong!', { position: POSITION.TOP_CENTER, timeout: 2000 })
+        })
+    },
   },
 })

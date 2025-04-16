@@ -19,8 +19,8 @@ function getTypeBgColor100(type?: string): string {
     Meeting: 'bg-green-100',
     Event: 'bg-purple-100',
     Disabled: 'bg-gray-100',
-  };
-  return (type && colors[type]) || 'bg-gray-200';
+  }
+  return (type && colors[type]) || 'bg-gray-200'
 }
 
 function getTypeBgColor200(type?: string): string {
@@ -30,8 +30,8 @@ function getTypeBgColor200(type?: string): string {
     Meeting: 'bg-green-200',
     Event: 'bg-purple-200',
     Disabled: 'bg-gray-200',
-  };
-  return (type && colors[type]) || 'bg-gray-200';
+  }
+  return (type && colors[type]) || 'bg-gray-200'
 }
 
 function getTypeTextColor700(type?: string): string {
@@ -41,8 +41,8 @@ function getTypeTextColor700(type?: string): string {
     Meeting: 'text-green-700',
     Event: 'text-purple-700',
     Disabled: 'text-gray-700',
-  };
-  return (type && colors[type]) || 'bg-gray-700';
+  }
+  return (type && colors[type]) || 'bg-gray-700'
 }
 
 function getTypeTextColor800(type?: string): string {
@@ -52,8 +52,15 @@ function getTypeTextColor800(type?: string): string {
     Meeting: 'text-green-800',
     Event: 'text-purple-800',
     Disabled: 'text-gray-800',
-  };
-  return (type && colors[type]) || 'bg-gray-800';
+  }
+  return (type && colors[type]) || 'bg-gray-800'
 }
 
-export { formatTime, formatDate, getTypeBgColor100, getTypeBgColor200, getTypeTextColor700, getTypeTextColor800 }
+export {
+  formatTime,
+  formatDate,
+  getTypeBgColor100,
+  getTypeBgColor200,
+  getTypeTextColor700,
+  getTypeTextColor800,
+}
