@@ -2,11 +2,11 @@
 import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/UserStore'
-import { useBookingStore } from '@/stores/BookingStore'
+import { useReservationStore } from '@/stores/ReservationStore'
 import { CalendarHeader, CalendarGrid, NewEventPopup, RoomSelectionPopup } from '@/components'
 import type { EventItem } from '@/common/CustomTypes'
 
-const { selectedRoom, selectedDate, newEventDate, events, reservationTypes, venues } = storeToRefs(useBookingStore())
+const { selectedRoom, selectedDate, newEventDate, events, reservationTypes, venues } = storeToRefs(useReservationStore())
 const { userId, title, firstName } = storeToRefs(useUserStore())
 
 function getWeekForDate(date: Date): Date[] {
@@ -59,15 +59,15 @@ function buildUserName() {
 onMounted(async () => {
   await useUserStore().setActiveUser()
   if (userId.value) {
-    await useBookingStore().getReservationTypes()
-    await useBookingStore().getVenues()
+    await useReservationStore().getReservationTypes()
+    await useReservationStore().getVenues()
   }
 })
 </script>
 
 <template>
   <div class="p-4">
-    <RoomSelectionPopup :userName="buildUserName()" :rooms="venues" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="useUserStore().logout" />
+    <RoomSelectionPopup :userName="buildUserName()" :rooms="venues" :selectedRoom="{}" @updateSelectedRoom="useReservationStore().updateSelectedRoom" @logout="useUserStore().logout" />
 
     <transition
       enter-active-class="transition-opacity duration-3000" 
@@ -88,7 +88,7 @@ onMounted(async () => {
           :checkOwner="(ownerId: string): boolean => ownerId === userId"
           @selectDay="selectDay"
           @openNewEvent="openNewEvent"
-          @deleteEvent="(event: EventItem) => event.reservationId && useBookingStore().deleteReservation(event.reservationId)"
+          @deleteEvent="(event: EventItem) => event.reservationId && useReservationStore().deleteReservation(event.reservationId)"
         />
       </div>
     </transition>
@@ -98,7 +98,7 @@ onMounted(async () => {
       :date="newEventDate"
       :types="reservationTypes"
       :organizer="{key: userId}"
-      @addEvent="useBookingStore().bookReservation"
+      @addEvent="useReservationStore().bookReservation"
       @close="closeNewEventPopup"
     />
   </div>

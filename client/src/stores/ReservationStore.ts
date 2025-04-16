@@ -36,7 +36,7 @@ const getInitialState = (): {
   }
 }
 
-export const useBookingStore = defineStore('booking', {
+export const useReservationStore = defineStore('reservation', {
   state: getInitialState,
   actions: {
     updateSelectedRoom(room: {key: string, value: string}) {
