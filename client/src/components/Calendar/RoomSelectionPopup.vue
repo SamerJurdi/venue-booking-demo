@@ -54,7 +54,7 @@ function onRoomChange(event: Event) {
       </div>
     </div>
 
-    <div v-else class="fixed top-0 left-0 w-full bg-white shadow p-4 flex justify-between items-center z-50">
+    <div v-else class="relative w-full bg-white shadow p-4 flex justify-between items-center z-50">
       <div class="flex items-center">
         <span class="text-xl font-bold">Welcome {{ props.userName }}</span>
         <span class="ml-4 text-gray-600">

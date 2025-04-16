@@ -51,7 +51,7 @@ function onMonthYearChange() {
 </script>
 
 <template>
-  <div class="flex items-center justify-between mb-4">
+  <div class="flex items-center justify-between py-2 border-b">
     <button @click="$emit('changeMonth', -1)" class="px-4 py-2 bg-gray-200 rounded">&larr;</button>
 
     <div class="flex flex-row items-center space-x-4">
@@ -78,7 +78,7 @@ function onMonthYearChange() {
 
     <button @click="$emit('changeMonth', 1)" class="px-4 py-2 bg-gray-200 rounded">&rarr;</button>
   </div>
-  <div class="grid grid-cols-7 mb-2">
+  <div class="grid grid-cols-7 p-2 border-x">
     <div class="text-center font-semibold" v-for="day in week" :key="day">
       {{ day }}
     </div>

@@ -66,7 +66,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-screen p-4">
+  <div class="p-4">
     <RoomSelectionPopup :userName="buildUserName()" :rooms="venues" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="" />
 
     <transition
@@ -74,7 +74,7 @@ onMounted(async () => {
       enter-from-class="opacity-0" 
       enter-to-class="opacity-100"
     >
-      <div v-if="selectedRoom.key">
+      <div v-if="selectedRoom.key" class="shadow-2xl px-4 pb-4 mt-2 border-t">
         <CalendarHeader
           :selectedDate="selectedDate"
           @changeMonth="changeMonth"
