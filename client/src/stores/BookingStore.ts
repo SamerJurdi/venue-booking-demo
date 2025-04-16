@@ -86,7 +86,7 @@ export const useBookingStore = defineStore('booking', {
         startDate: formatDate(date) + 'T' + event.start + ':00.000Z',
         endDate: formatDate(date) + 'T' + event.end + ':00.000Z',
         typeId: event.type.key,
-        venueId: "1",
+        venueId: this.selectedRoom.key,
         title: event.title,
         description: event.description,
       }
