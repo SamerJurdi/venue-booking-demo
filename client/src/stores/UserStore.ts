@@ -73,6 +73,20 @@ export const useUserStore = defineStore('user', {
           this.resetUser()
           router.push({ name: 'login' })
         })
+    },
+    async logout() {
+      await axios.get('/api/auth/logout')
+      .then((response) => {
+        if (response.status !== 204) {
+          toast.error('Something went wrong!', {position: POSITION.TOP_CENTER, timeout: 2000})
+        } else {
+          this.resetUser()
+          router.push({ name: 'login' })
+        }
+      })
+      .catch(() => {
+        toast.error('Something went wrong!', {position: POSITION.TOP_CENTER, timeout: 2000})
+      })
     }
   },
 })

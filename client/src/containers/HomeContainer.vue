@@ -67,7 +67,7 @@ onMounted(async () => {
 
 <template>
   <div class="p-4">
-    <RoomSelectionPopup :userName="buildUserName()" :rooms="venues" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="" />
+    <RoomSelectionPopup :userName="buildUserName()" :rooms="venues" :selectedRoom="{}" @updateSelectedRoom="useBookingStore().updateSelectedRoom" @logout="useUserStore().logout" />
 
     <transition
       enter-active-class="transition-opacity duration-3000" 
