@@ -17,6 +17,11 @@ async function queryBookedReservations(startDate: string, endDate: string) {
   return await queryDatabase(sql, [startDate, endDate]);
 }
 
+async function findUserReservation(userId: string, reservationId: string) {
+  const sql = 'SELECT * FROM "Reservation" WHERE organizer_id = $1 AND id = $2'
+  return await queryDatabase(sql, [userId, reservationId])
+}
+
 async function deleteUserReservation(userId: string, reservationId: string) {
   const sql = 'DELETE FROM "Reservation" WHERE organizer_id = $1 AND id = $2 RETURNING id'
   return await queryDatabase(sql, [userId, reservationId])
@@ -125,6 +130,20 @@ async function createReservation(req: Request, res: Response) {
 async function deleteReservation(req: Request, res: Response) {
   const reservationId = req.params.reservationId;
   try {
+    const userId = getSessionUser(req).id;
+    const reservation = (await findUserReservation(userId, reservationId))[0];
+    console.log({reservation})
+    if (!reservation) {
+      res.status(404).json({ message: 'Reservation not found' });
+      return;
+    }
+
+    const now = new Date();
+    if (reservation.start_datetime <= now) {
+      res.status(403).json({ message: 'You can not delete old reservations' })
+      return;
+    }
+
     const deleted = await deleteUserReservation(getSessionUser(req).id, reservationId);
     if (deleted.length === 1) {
       res.status(200).json({ message: 'Your reservation has been deleted' });
