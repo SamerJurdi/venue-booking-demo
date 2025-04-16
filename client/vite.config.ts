@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     vue(),
     vueJsx(),
@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.NODE_ENV === 'production' ? 'https://venue-booking-backend.vercel.app/' :  'http://localhost:3000',
+        target: mode === 'production' ? 'https://venue-booking-backend.vercel.app/' :  'http://localhost:3000',
         changeOrigin: true,
       }
     }
@@ -27,4 +27,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-})
+}))
