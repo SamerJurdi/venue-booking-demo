@@ -4,7 +4,7 @@ import { ref, defineEmits } from 'vue'
 const props = defineProps<{
   userName: string
   rooms: {key: string, value: string}[]
-  selectedRoom: {key: string, value: string}
+  selectedRoom: {key?: string, value?: string}
 }>()
 
 const emit = defineEmits<{

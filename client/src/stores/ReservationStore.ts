@@ -54,17 +54,19 @@ export const useReservationStore = defineStore('reservation', {
       this.events = getInitialState().events
       axios.get('/api/reservations/venue/' + this.selectedRoom.key).then((response) => {
         if (response.status === 200) {
-          response.data.reservations.forEach((reservation: any) => {
-            reservation.is_visible && this.addEvent(new Date(reservation.start_datetime), {
-              ...sampleEventItem,
-              reservationId: reservation.id,
-              title: reservation.title,
-              description: reservation.description || '',
-              organizer: {key: reservation.organizer_id, value: reservation.organizer},
-              type: {key: reservation.type_id, value: reservation.type},
-              start: formatTime(new Date(reservation.start_datetime)),
-              end: formatTime(new Date(reservation.end_datetime)),
-            })
+          response.data.reservations.forEach((reservation: {is_visible: string, id: string, title: string, description: string, organizer_id: string, organizer: string, type_id: string, type: string, start_datetime: string, end_datetime: string}) => {
+            if (reservation.is_visible) {
+              this.addEvent(new Date(reservation.start_datetime), {
+                ...sampleEventItem,
+                reservationId: reservation.id,
+                title: reservation.title,
+                description: reservation.description || '',
+                organizer: {key: reservation.organizer_id, value: reservation.organizer},
+                type: {key: reservation.type_id, value: reservation.type},
+                start: formatTime(new Date(reservation.start_datetime)),
+                end: formatTime(new Date(reservation.end_datetime)),
+              })
+            }
           })
         } else toast.error(response.data.message || 'Something went wrong!')
       }).catch(error => toast.error(error.response.data.message || 'Something went wrong!'))
@@ -73,7 +75,7 @@ export const useReservationStore = defineStore('reservation', {
       this.reservationTypes = getInitialState().reservationTypes
       axios.get('/api/reservations/types').then((response) => {
         if (response.status === 200) {
-          response.data.reservationTypes.forEach((reservationType: any) => {
+          response.data.reservationTypes.forEach((reservationType: {id: string, name: string}) => {
             const key = reservationType.id
             const value = reservationType.name
             this.reservationTypes.push({key, value})

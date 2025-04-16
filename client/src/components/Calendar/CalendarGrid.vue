@@ -8,7 +8,7 @@ const props = defineProps<{
   selectedDate: Date
   selectedWeek: Date[]
   events: Record<string, EventItem[]>
-  checkOwner: Function
+  checkOwner: (ownerId: string) => boolean
 }>()
 defineEmits<{
   (e: 'selectDay', day: Date): void
@@ -102,7 +102,7 @@ function openEventDetail(event: EventItem) {
     <EventDetailPopup
       v-if="showEventPopup && selectedEventDetail"
       :event="selectedEventDetail"
-      :showDeleteButton="checkOwner(selectedEventDetail.organizer.key)"
+      :showDeleteButton="checkOwner(selectedEventDetail.organizer.key || '')"
       @close="showEventPopup = false"
       @deleteEvent="(event: EventItem) => {
         $emit('deleteEvent', event)
