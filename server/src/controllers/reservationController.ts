@@ -12,9 +12,9 @@ async function queryReservations(startDate: string, endDate: string) {
   return await queryDatabase(sql, [startDate, endDate]);
 }
 
-async function queryBookedReservations(startDate: string, endDate: string) {
-  const sql = 'SELECT * FROM "Reservation" WHERE start_datetime < $2 AND end_datetime > $1';
-  return await queryDatabase(sql, [startDate, endDate]);
+async function queryBookedReservations(startDate: string, endDate: string, venueId: string) {
+  const sql = 'SELECT * FROM "Reservation" WHERE start_datetime < $2 AND end_datetime > $1 AND venue_id = $3';
+  return await queryDatabase(sql, [startDate, endDate, venueId]);
 }
 
 async function findUserReservation(userId: string, reservationId: string) {
@@ -112,7 +112,7 @@ async function createReservation(req: Request, res: Response) {
   }
 
   try {
-    const isReserved = (await queryBookedReservations(startDate, endDate)).length > 0;
+    const isReserved = (await queryBookedReservations(startDate, endDate, venueId)).length > 0;
 
     if (isReserved) {
       res.status(409).json({ message: 'Reservation conflict' });
