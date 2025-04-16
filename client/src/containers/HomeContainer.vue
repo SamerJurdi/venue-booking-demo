@@ -74,7 +74,7 @@ onMounted(async () => {
       enter-from-class="opacity-0" 
       enter-to-class="opacity-100"
     >
-      <div v-if="selectedRoom">
+      <div v-if="selectedRoom.key">
         <CalendarHeader
           :selectedDate="selectedDate"
           @changeMonth="changeMonth"
