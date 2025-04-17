@@ -1,9 +1,12 @@
 import express, { Request, Response } from 'express';
 import session from 'express-session';
+import connectMemoryStore from 'memorystore';
 import { authRoute, reservationRoute } from './routes/index.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const MemoryStore = connectMemoryStore(session);
 
 app.use(express.json());
 app.use(session({
@@ -15,7 +18,10 @@ app.use(session({
     secure: false,
     httpOnly: true,
     maxAge: 1000 * 60 * 60
-  }
+  },
+  store: new MemoryStore({
+    checkPeriod: 1000 * 60 * 60
+  }),
 }));
 
 // @ts-expect-error
