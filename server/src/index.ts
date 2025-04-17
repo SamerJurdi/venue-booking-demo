@@ -19,9 +19,11 @@ app.use(session({
 }));
 
 // @ts-expect-error
-app.get("/", (req: Request, res: Response) => res.send("Express on Vercel"));
-app.use('/auth', authRoute)
-app.use('/reservations', reservationRoute)
+app.get("/", (req: Request, res: Response) => res.send("Nothing to show here!"));
+// @ts-expect-error
+app.get("/api/", (req: Request, res: Response) => res.send("Nothing to show here!"));
+app.use('/api/auth', authRoute)
+app.use('/api/reservations', reservationRoute)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
