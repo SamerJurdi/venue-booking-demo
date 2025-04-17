@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://venue-booking-backend.vercel.app/', // 'http://localhost:3000',
+        target: 'http://localhost:3000',
         changeOrigin: true,
       }
     }
