@@ -13,7 +13,7 @@ app.use(session({
   // @ts-expect-error
   secret: process.env.SECRET_KEY,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: { 
     secure: false,
     httpOnly: true,
